@@ -14,11 +14,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.insecurebankv2.DoLogin;
@@ -39,6 +42,8 @@ public class LoginActivity extends Activity {
 	EditText Username_Text;
 	//   The EditText that holds the password entered by the user
 	EditText Password_Text;
+
+	private ImageView imageView;
 	//   The Button that allows the user to autofill the credentials,
 	//  if the user has logged in successfully earlier
 	Button fillData_button;
@@ -54,6 +59,11 @@ public class LoginActivity extends Activity {
 //         View button_CreateUser = findViewById(R.id.button_CreateUser2);
 //         button_CreateUser.setVisibility(View.GONE);
 //      }
+
+		imageView = (ImageView) findViewById(R.id.imageView3);
+
+		registerForContextMenu(imageView);
+
 		login_buttons = (Button) findViewById(R.id.login_button);
 		login_buttons.setOnClickListener(new View.OnClickListener() {
 
@@ -106,6 +116,30 @@ public class LoginActivity extends Activity {
 //            }
 //        });
 
+	}
+
+	public void onCreateContextMenu(ContextMenu menu,
+									View v,
+									ContextMenu.ContextMenuInfo menuInfo)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.context_menu, menu);
+	}
+
+	public boolean onContextItemSelected(MenuItem item) {
+		switch(item.getItemId())
+		{
+			case R.id.setNetwork:
+				Intent intent = new Intent(getApplicationContext(), FilePrefActivity.class);
+				startActivity(intent);
+				return true;
+
+			case R.id.setRestart:
+				finish();
+				startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+				return true;
+		}
+		return super.onContextItemSelected(item);
 	}
 
     /*
