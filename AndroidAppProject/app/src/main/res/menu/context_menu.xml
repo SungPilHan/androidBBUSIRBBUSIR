@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/setNetwork"
+        android:title="네트워크 설정">
+    </item>
+
+    <item
+        android:id="@+id/setRestart"
+        android:title="재시작">
+    </item>
+</menu>
