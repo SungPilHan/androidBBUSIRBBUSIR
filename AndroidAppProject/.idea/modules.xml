@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/InsecureBankv2.iml" filepath="$PROJECT_DIR$/InsecureBankv2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/InsecureBankv2.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/InsecureBankv2.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidAppProject.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidAppProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidAppProject.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidAppProject.app.iml" />
     </modules>
   </component>
 </project>
