@@ -9,11 +9,12 @@
         android:id="@+id/changepasswd_back"
         android:layout_width="48dp"
         android:layout_height="24dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="1dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="358dp"
-        android:layout_marginBottom="670dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="354dp"
+        android:layout_marginBottom="669dp"
+        android:layout_marginRight="354dp"
         android:rotation="180"
         android:src="@drawable/back" />
 
@@ -55,8 +56,8 @@
         android:layout_marginBottom="436dp"
         android:background="@drawable/border_edittext"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="  비밀번호를 입력해주세요"
+        android:inputType="text"
+        android:hint="  비밀번호를 입력해주세요"
         android:textSize="20sp" />
 
     <EditText
@@ -69,8 +70,9 @@
         android:layout_marginBottom="355dp"
         android:background="@drawable/border_edittext"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="  비밀번호를 한번 더 입력해주세요"
+        android:inputType="text"
+        android:password="true"
+        android:hint="  비밀번호를 한번 더 입력해주세요"
         android:textSize="20sp" />
 
     <Button
@@ -82,7 +84,7 @@
         android:layout_marginEnd="31dp"
         android:layout_marginBottom="276dp"
         android:background="@drawable/border_button"
-        android:text="등록"
+        android:text="비밀번호 변경"
         android:textSize="20sp"
         android:textStyle="bold" />
 
