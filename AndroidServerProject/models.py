@@ -8,50 +8,59 @@ from database import Base, db_session
 
 class User(Base):
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    username = Column(String(50), unique=True)
+    username = Column(String(50), primary_key=True, unique=True)
     password = Column(String(50))
-    first_name = Column(String(50))
-    last_name = Column(String(50))
     
-    def __init__(self, username=None, password=None, first_name=None, last_name=None):
+    def __init__(self, username=None, password=None):
         self.username = username
         self.password = password
-        self.first_name = first_name
-        self.last_name = last_name
 
     def __repr__(self):
         return '<User %r>' % (self.username)
     
     @property
     def values(self):
-        return {"username" : self.username,
-                "first_name" : self.first_name,
-                "last_name" : self.last_name,
-                }
+        return {"username" : self.username}
 
 class Account(Base):
     __tablename__ = 'accounts'
-    id = Column(Integer, primary_key=True) 
-    account_number = Column(Integer, unique=True)
-    type = Column(String(50))
+    accountNo = Column(Integer, primary_key=True, unique=True) 
     balance = Column(Integer)
-    user_id = Column(Integer)
     user = Column(String(50))
 
-    def __init__(self, account_number=None, type=type, balance=None, user=None):
-        self.account_number = account_number
-        self.type = type
+    def __init__(self, accountNo=None, balance=None, user=None):
+        self.accountNo = accountNo
         self.balance = balance
         self.user = user
 
     def __repr__(self):
-        return '<Account %r>' % (self.account_number)  
+        return '<Account %r>' % (self.accountNo)  
 
     @property
     def values(self):
-        return {"account_number" : self.account_number,
-                "type" : self.type,
+        return {"accountNo" : self.accountNo,
                 "balance" : self.balance,
+                "user" : self.user
                 }    
 
+class History(Base):
+    __tablename__ = 'history'
+    id = Column(Integer, primary_key=True, unique=True) 
+    from_acc = Column(Integer)
+    to_acc = Column(Integer)
+    amount = Column(Integer)
+
+    def __init__(self, from_acc=None, to_acc=None, amount=None):
+        self.from_acc = from_acc
+        self.to_acc = to_acc
+        self.amount = amount
+
+    def __repr__(self):
+        return '<History %r>' % (self.from_acc)  
+
+    @property
+    def values(self):
+        return {"from_acc" : self.from_acc,
+                "to_acc" : self.to_acc,
+                "amount" : self.amount
+                }
