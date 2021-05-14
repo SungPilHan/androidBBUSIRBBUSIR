@@ -6,7 +6,7 @@ import sys
 from cheroot import wsgi # This replaces the 2 above
 from flask import Flask, request, request_started, render_template_string
 from functools import wraps
-from models import User, Account
+from models import History, User, Account
 from database import db_session
 import simplejson as json
 makejson = json.dumps
@@ -50,7 +50,7 @@ def login():
 '''
 The function responds back with the from and to debit accounts corresponding to logged in user
 '''
-@app.route('/getaccounts', methods=['POST'])
+'''@app.route('/getaccounts', methods=['POST'])
 def getaccounts():
 	#set accounts from the request 
 	Responsemsg="fail"
@@ -72,7 +72,7 @@ def getaccounts():
 	data = {"message" : Responsemsg, "from": from_acc,"to": to_acc}
 	print(makejson(data))
 	return makejson(data)
-
+'''
 '''
 The function takes a new password as input and passes it on to the change password module
 '''
@@ -114,19 +114,23 @@ def dotransfer():
 	from_acc = request.form["from_acc"]
 	to_acc = request.form["to_acc"]
 	amount = request.form["amount"]
-	from_account = Account.query.filter(Account.account_number == from_acc).first()
-	to_account = Account.query.filter(Account.account_number == to_acc).first()
+	from_account = Account.query.filter(Account.accountNo == from_acc).first()
+	#print(from_account)
+	to_account = Account.query.filter(Account.accountNo == to_acc).first()
 	#print("fromacc=",from_account)
 	#print("amount===",amount)
-	to_account.balance += int(request.form['amount'])
-	from_account.balance -= int(request.form['amount'])
+	to_account.balance += int(amount)
+	from_account.balance -= int(amount)
+	db_session.add(History(int(from_acc), int(to_acc), int(amount)))
 	db_session.commit()
 	data = {"message" : Responsemsg, "from": from_acc, "to": to_acc,  "amount": amount}
+	print(data)
 	#print(makejson(data))
 	return makejson(data)
 
 '''
 The function provides login mechanism to a developer user during development phase
+'''
 '''
 @app.route('/devlogin', methods=['POST'])
 def devlogin():
@@ -135,7 +139,7 @@ def devlogin():
 	data = {"message" : Responsemsg, "user": user}
 	print(makejson(data))
 	return makejson(data)
-
+'''
 
 '''
 SSTI
