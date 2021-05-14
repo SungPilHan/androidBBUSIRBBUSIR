@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.android.insecurebankv2.DoLogin;
@@ -61,8 +62,6 @@ public class LoginActivity extends Activity {
 //      }
 
 		imageView = (ImageView) findViewById(R.id.imageView3);
-
-		registerForContextMenu(imageView);
 
 		login_buttons = (Button) findViewById(R.id.login_button);
 		login_buttons.setOnClickListener(new View.OnClickListener() {
@@ -116,31 +115,37 @@ public class LoginActivity extends Activity {
 //            }
 //        });
 
+		imageView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View view) {
+				final PopupMenu popupMenu = new PopupMenu(getApplicationContext(),view);
+				getMenuInflater().inflate(R.menu.popup,popupMenu.getMenu());
+				popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+
+
+						if (item.getItemId() == R.id.setNetwork){
+							Intent intent = new Intent(getApplicationContext(), FilePrefActivity.class);
+							startActivity(intent);
+						}
+						else {
+							finish();
+							Intent intent2 = new Intent(getApplicationContext(), LoginActivity.class);
+							startActivity(intent2);
+						}
+
+						return false;
+					}
+
+				});
+				popupMenu.show();
+			}
+		});
 	}
 
-	public void onCreateContextMenu(ContextMenu menu,
-									View v,
-									ContextMenu.ContextMenuInfo menuInfo)
-	{
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.context_menu, menu);
-	}
+//onCreate
 
-	public boolean onContextItemSelected(MenuItem item) {
-		switch(item.getItemId())
-		{
-			case R.id.setNetwork:
-				Intent intent = new Intent(getApplicationContext(), FilePrefActivity.class);
-				startActivity(intent);
-				return true;
-
-			case R.id.setRestart:
-				finish();
-				startActivity(new Intent(LoginActivity.this, LoginActivity.class));
-				return true;
-		}
-		return super.onContextItemSelected(item);
-	}
 
     /*
     The function that allows the user to create new user credentials.

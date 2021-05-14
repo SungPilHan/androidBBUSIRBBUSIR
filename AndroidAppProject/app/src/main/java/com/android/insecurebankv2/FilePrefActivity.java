@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.marcohc.toasteroid.Toasteroid;
@@ -28,6 +29,9 @@ public class FilePrefActivity extends Activity {
 	static EditText edittext_serverip;
 	//	The EditText that stores the user entered server port number
 	static EditText edittext_serverport;
+
+	private ImageView back_imageView;
+
 	//  The Button that handles the save preference activity
 	Button submitPref_buttonz;
 	SharedPreferences preferences;
@@ -42,6 +46,7 @@ public class FilePrefActivity extends Activity {
 		submitPref_buttonz = (Button) findViewById(R.id.submitPref_button);
 		edittext_serverip = (EditText) findViewById(R.id.edittext_serverip);
 		edittext_serverport = (EditText) findViewById(R.id.edittext_serverport);
+		back_imageView = (ImageView) findViewById(R.id.back_imageView);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		editor = preferences.edit();
 		submitPref_buttonz.setOnClickListener(new View.OnClickListener() {@Override
@@ -52,6 +57,13 @@ public class FilePrefActivity extends Activity {
 			}
 		});
 
+		back_imageView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
     // Added for handling menu operations
