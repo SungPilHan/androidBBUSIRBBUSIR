@@ -2,8 +2,10 @@ package com.android.insecurebankv2;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +37,10 @@ public class PostLogin extends Activity {
 	//	The Button that handles the transfer activity
 	ImageView image_lock;
 	Button transfer_button;
+
+	TextView price;
+	TextView account_number;
+
 	//  The Textview that handles the root status display
 //	TextView root_status;
 	//	The Button that handles the view transaction history activity
@@ -56,6 +62,8 @@ public class PostLogin extends Activity {
 //        showRootStatus();
 //        //	Display emulator status
 //        checkEmulatorStatus();
+
+
 
 		image_back = (ImageView) findViewById(R.id.new_main_back);
 		image_back.setOnClickListener(new View.OnClickListener() {
@@ -81,10 +89,22 @@ public class PostLogin extends Activity {
 		transfer_button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent T = new Intent(getApplicationContext(), test.class);
-				startActivity(T);
+				testaccount();
+
+//				Intent data = new Intent();
+//
+//				data.setData(Uri.parse(price.getText().toString()));
+//				setResult(RESULT_OK, data);
+
+//				Intent T = new Intent(getApplicationContext(), test.class);
+//				startActivity(T);
 			}
 		});
+
+
+
+
+
 //		transfer_button.setOnClickListener(new View.OnClickListener() {
 //
 //			@Override
@@ -241,6 +261,20 @@ public class PostLogin extends Activity {
 //		Intent i = new Intent(this, FilePrefActivity.class);
 //		startActivity(i);
 //	}
+	}
+
+	private void testaccount() {
+		price = (TextView) findViewById(R.id.price);
+		account_number = (TextView) findViewById(R.id.account_number);
+
+		Intent a = new Intent(this, test.class);
+
+		a.putExtra("passed_price", price.getText().toString());
+		a.putExtra("passed_account", account_number.getText().toString());
+		startActivity(a);
+
+
+
 	}
 
 }
