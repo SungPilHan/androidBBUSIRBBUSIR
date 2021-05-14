@@ -1,9 +1,8 @@
 import getopt
+from flask.wrappers import Response
 import web
 import sys
-#from web.wsgiserver import CherryPyWSGIServer
-#from cherrypy import wsgiserver
-from cheroot import wsgi # This replaces the 2 above
+from cheroot import wsgi
 from flask import Flask, request, request_started, render_template_string
 from functools import wraps
 from models import History, User, Account
@@ -34,7 +33,7 @@ def login():
 	Responsemsg="fail"
 	user = request.form['username']
 	#checks for presence of user in the database #requires models.py
-	u = User.query.filter(User.username == request.form["username"]).first()
+	u = User.query.filter(User.username == user).first()
 	print("u=",u)
 	if u and u.password == request.form["password"]:
 		Responsemsg="Correct Credentials"
@@ -46,6 +45,32 @@ def login():
 	data = {"message" : Responsemsg, "user": user}
 	print(makejson(data))
 	return makejson(data)
+
+@app.route('/idcheck', methods=['POST'])
+def idcheck():
+	Responsemsg="User Exist"
+	username = request.form["username"]
+	u = User.query.filter(User.username == username).first()
+	if not u:
+		Responsemsg="You Can Use It"	
+	data = {"message" : Responsemsg}
+	print(makejson(data))
+	return makejson(data)	
+
+@app.route('/join', methods=['POST'])
+def join():
+	Responsemsg="Error"
+	username = request.form["username"]
+	password = request.form["password"]
+	try:
+		db_session.add(User(username=username, password=password))
+		db_session.commit()
+		Responsemsg="Done"
+	except:
+		pass
+	data = {"message" : Responsemsg}
+	print(makejson(data))
+	return makejson(data)	
 
 '''
 The function responds back with the from and to debit accounts corresponding to logged in user
@@ -77,19 +102,21 @@ def getaccounts():
 The function takes a new password as input and passes it on to the change password module
 '''
 @app.route('/changepassword', methods=['POST'])
-def changepassword():
-	#set accounts from the request 
+def changepassword(): 
 	Responsemsg="fail"
 	newpassword=request.form['newpassword']
 	user=request.form['username']
 	print(newpassword)
-	u = User.query.filter(User.username == user).first() #checks for presence of user in the database
+	u = User.query.filter(User.username == user).first()
 	if not u:
 		Responsemsg="Error"
 	else:
-		Responsemsg="Change Password Successful"
-		u.password = newpassword
-		db_session.commit()
+		try:
+			u.password = newpassword
+			db_session.commit()
+			Responsemsg="Change Password Successful"
+		except:
+			Responsemsg="Error"
 	data = {"message" : Responsemsg}
 	print(makejson(data))
 	return makejson(data)
@@ -107,25 +134,23 @@ def dotransfer():
 	u = User.query.filter(User.username == user).first() #checks for presence of user in the database
 	if not u or u.password != request.form["password"]:
 		Responsemsg="Wrong Credentials so trx fail"
-	#print(Responsemsg)
+		data = {"message" : Responsemsg}
 	else:
 		Responsemsg="Success"
-	#print(Responsemsg)
-	from_acc = request.form["from_acc"]
-	to_acc = request.form["to_acc"]
-	amount = request.form["amount"]
-	from_account = Account.query.filter(Account.accountNo == from_acc).first()
-	#print(from_account)
-	to_account = Account.query.filter(Account.accountNo == to_acc).first()
-	#print("fromacc=",from_account)
-	#print("amount===",amount)
-	to_account.balance += int(amount)
-	from_account.balance -= int(amount)
-	db_session.add(History(int(from_acc), int(to_acc), int(amount)))
-	db_session.commit()
-	data = {"message" : Responsemsg, "from": from_acc, "to": to_acc,  "amount": amount}
-	print(data)
-	#print(makejson(data))
+		from_acc = request.form["from_acc"]
+		to_acc = request.form["to_acc"]
+		amount = request.form["amount"]
+		from_account = Account.query.filter(Account.accountNo == from_acc).first()
+		to_account = Account.query.filter(Account.accountNo == to_acc).first()
+		try:
+			to_account.balance += int(amount)
+			from_account.balance -= int(amount)
+			db_session.add(History(int(from_acc), int(to_acc), int(amount)))
+			db_session.commit()
+			data = {"message" : Responsemsg, "from": from_acc, "to": to_acc,  "amount": amount}
+		except:
+			data = {"message" : "Error"}
+	print(makejson(data))
 	return makejson(data)
 
 '''
