@@ -4,17 +4,17 @@
     android:layout_width="wrap_content"
     android:background="#FFFFFF">
 
-        <TextView
-            android:id="@+id/main_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="41dp"
-            android:layout_marginTop="56dp"
-            android:layout_marginEnd="293dp"
-            android:text="로그인"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/main_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="62dp"
+        android:layout_marginEnd="293dp"
+        android:text="로그인"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
 
     <ImageView
@@ -43,25 +43,26 @@
             android:textSize="20sp" />
 
     <EditText
-            android:id="@+id/loginscreen_password"
-            android:layout_width="350dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="227dp"
-            android:layout_marginEnd="29dp"
-            android:layout_marginBottom="443dp"
-            android:background="@drawable/border_edittext"
-            android:ems="10"
-            android:hint=" 비밀번호를 입력해주세요"
-            android:inputType="textPersonName"
-            android:textSize="20sp"
-            android:singleLine="true"
-            android:password="true"/>
+        android:id="@+id/loginscreen_password"
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="227dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="443dp"
+        android:background="@drawable/border_edittext"
+        android:ems="10"
+        android:hint=" 비밀번호를입력해주세요"
+        android:inputType="textPersonName"
+        android:password="true"
+        android:singleLine="true"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/login_button"
         android:layout_width="350dp"
         android:layout_height="60dp"
+        android:layout_alignParentTop="false"
         android:layout_marginStart="32dp"
         android:layout_marginTop="350dp"
         android:layout_marginEnd="29dp"
