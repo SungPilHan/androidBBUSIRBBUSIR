@@ -153,6 +153,35 @@ def dotransfer():
 	print(makejson(data))
 	return makejson(data)
 
+@app.route('/accountlist', methods=['POST'])
+def accountlist(): 
+	Responsemsg="fail"
+	username=request.form['username']
+	u = Account.query.filter(Account.user == username).all()
+	if not u:
+		Responsemsg="Error"
+		data = {"message" : Responsemsg}
+	else:
+		Responsemsg="Success"
+		data = {"message" : Responsemsg, "account" : [{"number" : i.accountNo} for i in u]}	
+	print(makejson(data))
+	return makejson(data)
+
+@app.route('/accountadd', methods=['POST'])
+def accountadd(): 
+	Responsemsg="fail"
+	username=request.form['username']
+	try:
+		db_session.add(Account(balance=100000, user=username))
+		db_session.commit()
+		account = Account.query.filter(Account.user == username).order_by(Account.accountNo.desc()).first()
+		Responsemsg="Success"
+		data = {"message" : Responsemsg, "account" : account.accountNo}
+	except:
+		data = {"message" : Responsemsg}
+	print(makejson(data))
+	return makejson(data)
+
 '''
 The function provides login mechanism to a developer user during development phase
 '''
