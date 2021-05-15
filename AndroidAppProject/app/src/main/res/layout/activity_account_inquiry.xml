@@ -38,8 +38,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="100dp"
-        android:layout_marginStart="34dp"
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="594dp"
         android:text="계좌번호"
@@ -50,14 +50,14 @@
         android:id="@+id/account_number2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginStart="130dp"/>
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="100dp" />
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="140dp"
         android:layout_marginEnd="162dp"
         android:layout_marginBottom="542dp"
@@ -70,21 +70,27 @@
         android:id="@+id/price2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="140dp"/>
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="140dp" />
 
     <Button
         android:id="@+id/button_Transfer1"
         android:layout_width="105dp"
         android:layout_height="40dp"
-        android:layout_marginStart="264dp"
+        android:layout_marginStart="310dp"
         android:layout_marginTop="141dp"
-        android:layout_marginEnd="22dp"
+        android:layout_marginEnd="34dp"
         android:layout_marginBottom="539dp"
         android:background="@drawable/border_button"
         android:text="송금"
         android:textSize="20sp"
         android:textStyle="bold" />
+
+    <WebView
+        android:layout_width="350dp"
+        android:layout_height="480dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="230dp" />
 
 
 </RelativeLayout>
