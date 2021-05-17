@@ -32,25 +32,6 @@ public class WrongLogin extends Activity {
 		return true;
 	}
 
-	// Added for handling menu operations
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar wil
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			callPreferences();
-			return true;
-		} else if (id == R.id.action_exit) {
-			Intent i = new Intent(getBaseContext(), LoginActivity.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(i);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 	public void callPreferences() {
 		// TODO Auto-generated method stub
 		Intent i = new Intent(this, FilePrefActivity.class);
