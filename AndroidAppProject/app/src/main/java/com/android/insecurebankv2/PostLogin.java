@@ -9,9 +9,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import com.marcohc.toasteroid.Toasteroid;
 
 
 /*
@@ -37,9 +38,11 @@ public class PostLogin extends Activity {
 	//	The Button that handles the transfer activity
 	ImageView image_lock;
 	Button transfer_button;
+	Button add_count;
 
 	TextView price;
 	TextView account_number;
+
 	TextView name;
 
 	//  The Textview that handles the root status display
@@ -58,6 +61,12 @@ public class PostLogin extends Activity {
 		Intent intent = getIntent();
 		uname = intent.getStringExtra("uname");
 
+
+		name = (TextView) findViewById(R.id.name);
+		name.setText(uname);
+
+
+
 //        root_status =(TextView) findViewById(R.id.rootStatus);
 //        //  Display root status
 //        showRootStatus();
@@ -65,9 +74,8 @@ public class PostLogin extends Activity {
 //        checkEmulatorStatus();
 
 
-		name = (TextView) findViewById(R.id.name);
-		name.setText(uname);
 
+		// 뒤로가기
 		image_back = (ImageView) findViewById(R.id.new_main_back);
 		image_back.setOnClickListener(new View.OnClickListener() {
 
@@ -79,15 +87,20 @@ public class PostLogin extends Activity {
 			}
 		});
 
+
+		// 비밀번호 설정
 		image_lock = (ImageView) findViewById(R.id.new_main_lock);
 		image_lock.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent cp = new Intent(getApplicationContext(), ChangePassword2.class);
-				startActivity(cp);
+				testchangepw();
+//				Intent cp = new Intent(getApplicationContext(), ChangePassword2.class);
+//				startActivity(cp);
 			}
 		});
 
+
+		// 전송(계좌내역조회) 페이지로 이동
 		transfer_button = (Button) findViewById(R.id.trf_button);
 		transfer_button.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -104,6 +117,29 @@ public class PostLogin extends Activity {
 			}
 		});
 
+//		final ArrayList<String> items = new ArrayList<>();
+//
+//		final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, items);
+//
+//		final ListView listView = (ListView) findViewById(R.id.listview);
+//		listView.setAdapter(adapter);
+//
+//
+//		add_count = (Button) findViewById(R.id.add_account);
+//		add_count.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				int count;
+//				count = adapter.getCount();
+//
+//				items.add("가나다의 계좌" + Integer.toString(count + 1));
+//
+//				adapter.notifyDataSetChanged();
+//
+//
+//
+//			}
+//		});
 
 
 
@@ -217,7 +253,7 @@ public class PostLogin extends Activity {
     */
 //	protected void changePasswd() {
 //		// TODO Auto-generated method stub
-//		Intent cP = new Intent(getApplicationContext(), ChangePassword.class);
+//		Intent cP = new Intent(getApplicationContext(), ChangePassword2.class);
 //		cP.putExtra("uname", uname);
 //		startActivity(cP);
 //	}
@@ -231,6 +267,7 @@ public class PostLogin extends Activity {
 //		vS.putExtra("uname", uname);
 //		startActivity(vS);
 //	}
+
 //	public void callPreferences() {
 //		// TODO Auto-generated method stub
 //		Intent i = new Intent(this, FilePrefActivity.class);
@@ -238,6 +275,20 @@ public class PostLogin extends Activity {
 //	}
 	}
 
+	//비밀번호 변경 페이지로 이동, 사용자 id 전달
+	private void testchangepw() {
+
+		Intent cp = new Intent(getApplicationContext(), ChangePassword2.class);
+		startActivity(cp);
+
+		Intent b = new Intent(this, ChangePassword2.class);
+
+		b.putExtra("uname", name.getText().toString());
+		startActivity(b);
+
+	}
+
+	// 전송(계좌내역조회) 페이지로 금액, 계좌 값 전달
 	private void testaccount() {
 		price = (TextView) findViewById(R.id.price);
 		account_number = (TextView) findViewById(R.id.account_number);
@@ -247,7 +298,6 @@ public class PostLogin extends Activity {
 		a.putExtra("passed_price", price.getText().toString());
 		a.putExtra("passed_account", account_number.getText().toString());
 		startActivity(a);
-
 
 
 	}

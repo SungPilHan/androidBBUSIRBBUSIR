@@ -77,6 +77,8 @@
 
         </activity>
 
+        <activity android:name=".createuser" />
+
         <provider
             android:name=".TrackUserContentProvider"
             android:authorities="com.android.insecurebankv2.TrackUserContentProvider"
