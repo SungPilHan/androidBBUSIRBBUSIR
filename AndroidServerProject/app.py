@@ -3,7 +3,7 @@ from flask.wrappers import Response
 import web
 import sys
 from cheroot import wsgi
-from flask import Flask, request, request_started, render_template_string
+from flask import Flask, request, request_started, render_template_string, render_template
 from functools import wraps
 from models import History, User, Account
 from database import db_session
@@ -46,6 +46,10 @@ def login():
 	print(makejson(data))
 	return makejson(data)
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    return render_template('createuser_Web.html')
+
 @app.route('/idcheck', methods=['POST'])
 def idcheck():
 	Responsemsg="User Exist"
@@ -70,6 +74,7 @@ def join():
 		pass
 	data = {"message" : Responsemsg}
 	print(makejson(data))
+	accountadd()
 	return makejson(data)	
 
 '''
@@ -201,7 +206,6 @@ SSTI
 @app.route('/info', methods=['GET'])
 def info():
 	info = request.args.get('info') or None
-
 	temp = '''
 		{}
 	'''.format(info)
@@ -222,7 +226,7 @@ if __name__ == '__main__':
 
 	urls = ("/.*", "app")
 	apps = web.application(urls, globals())
-	server = wsgi.Server(("0.0.0.0", port),app,server_name='localhost')
+	server = wsgi.Server(("127.0.0.1", port),app,server_name='localhost')
 	print("The server is hosted on port:",(port))
 	
 	try:
