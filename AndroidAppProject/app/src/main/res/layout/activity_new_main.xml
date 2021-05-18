@@ -1,40 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:ignore="MissingClass">
+    android:background="#FFFFFF">
 
     <ImageView
         android:id="@+id/new_main_back"
         android:layout_width="48dp"
         android:layout_height="24dp"
-        android:layout_marginStart="1dp"
+        android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="38dp"
-        android:layout_marginEnd="354dp"
-        android:layout_marginBottom="669dp"
-        android:layout_marginRight="354dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="358dp"
+        android:layout_marginBottom="670dp"
         android:rotation="180"
         android:src="@drawable/back" />
 
     <ImageView
         android:id="@+id/new_main_lock"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentBottom="false"
-        android:layout_marginLeft="390dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginRight="14dp"
-        android:layout_marginBottom="664dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="385dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="666dp"
         android:src="@drawable/locker2" />
+
 
     <ImageView
         android:id="@+id/imageView6"
@@ -45,6 +35,20 @@
         android:layout_marginEnd="304dp"
         android:layout_marginBottom="545dp"
         android:src="@drawable/mongle" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="109dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="246dp"
+        android:layout_marginBottom="575dp"
+        android:text="가나다"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
 
     <Button
         android:id="@+id/trf_button"
@@ -59,18 +63,6 @@
         android:background="@drawable/border_button_account" />
 
     <TextView
-        android:id="@+id/account_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="313dp"
-        android:layout_marginEnd="168dp"
-        android:layout_marginBottom="391dp"
-        android:text="1111-22-3333333"
-        android:textSize="20sp"
-        />
-
-    <TextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,33 +74,77 @@
         android:textColor="#000000"
         android:textSize="20sp" />
 
-
-    <Button
-        android:id="@+id/add_account"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="458dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginBottom="211dp"
-        android:background="@drawable/border_button"
-        android:text="+"
-        android:textColor="#424141"
-        android:textSize="30sp"
-        android:textStyle="normal" />
-
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/account_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="109dp"
-        android:layout_marginTop="130dp"
-        android:layout_marginEnd="246dp"
-        android:layout_marginBottom="575dp"
-        android:text="가나다"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="313dp"
+        android:layout_marginEnd="168dp"
+        android:layout_marginBottom="391dp"
+        android:text="1111-22-3333333"
+        android:textSize="20sp" />
 
+    <!--        <Button-->
+    <!--            android:id="@+id/add_account"-->
+    <!--            android:layout_width="350dp"-->
+    <!--            android:layout_height="60dp"-->
+    <!--            android:layout_centerHorizontal="true"-->
+    <!--            android:layout_marginTop="450dp"-->
+    <!--            android:layout_marginStart="35dp"-->
+    <!--            android:background="@drawable/border_button"-->
+    <!--            android:text="+"-->
+    <!--            android:textColor="#424141"-->
+    <!--            android:textSize="30sp"-->
+    <!--            android:textStyle="normal" />-->
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="211dp">
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:divider="#00000000"
+            android:paddingStart="100dp" />
+
+    </LinearLayout>-->
+
+    <ScrollView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="430dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/border_button_account"
+                android:choiceMode="singleChoice"
+                android:dividerHeight="1.5dp" />
+
+            <Button
+                android:id="@+id/add_account"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_button"
+                android:text="+"
+                android:textColor="#424141"
+                android:textSize="30sp"
+                android:textStyle="normal" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

@@ -41,7 +41,8 @@
         android:layout_marginBottom="497dp"
         android:background="@drawable/border_edittext"
         android:ems="10"
-        android:hint="  IP"
+        android:hint="IP"
+        android:padding="15dp"
         android:inputType="text"
         android:textColor="#000000"
         android:textSize="20sp" />
@@ -56,7 +57,8 @@
         android:layout_marginBottom="417dp"
         android:background="@drawable/border_edittext"
         android:ems="10"
-        android:hint="  PORT"
+        android:hint="PORT"
+        android:padding="15dp"
         android:inputType="text"
         android:textColor="#000000"
         android:textSize="20sp" />

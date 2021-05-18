@@ -16,6 +16,7 @@ public class test extends Activity {
     TextView account_number2;
     TextView price2;
 
+    String number2;//송금할 때 보내는 계좌 text로 나타내기 위함
 
 
     @Override
@@ -28,8 +29,9 @@ public class test extends Activity {
         transfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent dT = new Intent(getApplicationContext(), DoTransfer.class);
-                startActivity(dT);
+                trans_account();
+                /*Intent dT = new Intent(getApplicationContext(), DoTransfer.class);
+                startActivity(dT);*/
             }
         });
 
@@ -45,7 +47,7 @@ public class test extends Activity {
         Intent intent = getIntent();
 
         account_number2 = (TextView)findViewById(R.id.account_number2);
-        String number2 = intent.getStringExtra("passed_account");
+        number2 = intent.getStringExtra("passed_account");
         account_number2.setTextSize(20);
         account_number2.setText(number2);
 
@@ -54,8 +56,22 @@ public class test extends Activity {
         price2.setTextSize(20);
         price2.setText(price22);
 
+    }
 
+    //송금 페이지로 이동, 사용자 계좌번호 전달
+    private void trans_account() {
 
+        /*Intent df = new Intent(getApplicationContext(), DoTransfer.class);
+        startActivity(df);*/
+
+        //account_number2 = (TextView)findViewById(R.id.account_number2);
+
+        Intent b = new Intent(this, DoTransfer.class);
+
+        b.putExtra("number2", account_number2.getText().toString());
+        System.out.println("------------------1" + number2);
+        startActivity(b);
 
     }
+
 }

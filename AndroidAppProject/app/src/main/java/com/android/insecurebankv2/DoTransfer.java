@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -58,6 +59,9 @@ public class DoTransfer extends Activity {
 	String usernameBase64ByteString;
 	ImageView image_back;
 
+	TextView editText_from;
+	String number2;
+
 	BufferedReader reader;
 	//	The EditText that holds the from account number
 	EditText from;
@@ -96,6 +100,13 @@ public class DoTransfer extends Activity {
 				startActivity(T);
 			}
 		});
+
+		//송금 페이지로 이동할 때 보내는 계좌 TextView에 사용자 계좌번호 전달
+		Intent intent = getIntent();
+		number2 = intent.getStringExtra("number2");
+		System.out.println("-----------------" + number2);
+		editText_from = (TextView) findViewById(R.id.editText_from);
+		editText_from.setText(number2);
 
 //        // Get Server details from Shared Preference file.
 //        serverDetails = PreferenceManager.getDefaultSharedPreferences(this);

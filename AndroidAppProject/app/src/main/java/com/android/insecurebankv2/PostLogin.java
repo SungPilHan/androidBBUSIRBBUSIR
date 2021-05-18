@@ -117,29 +117,37 @@ public class PostLogin extends Activity {
 			}
 		});
 
-//		final ArrayList<String> items = new ArrayList<>();
-//
-//		final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, items);
-//
-//		final ListView listView = (ListView) findViewById(R.id.listview);
-//		listView.setAdapter(adapter);
-//
-//
-//		add_count = (Button) findViewById(R.id.add_account);
-//		add_count.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				int count;
-//				count = adapter.getCount();
-//
-//				items.add("가나다의 계좌" + Integer.toString(count + 1));
-//
-//				adapter.notifyDataSetChanged();
-//
-//
-//
-//			}
-//		});
+		//ListView 생성하여 계좌 추가
+		final ArrayList<String> items = new ArrayList<>();
+
+
+		//count가 필요한 리스트뷰 레이아웃
+		//final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, items);
+		final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, items);//item_2는 또 안됨 item_2는 두 개의 데이터 저장하니까 HashMap 써야하네
+		//final ArrayAdapter adapter = new ArrayAdapter(this, R.layout.accounts_item, items);내가 만든 건데 안됨
+
+		final ListView listView = (ListView) findViewById(R.id.listview);
+		listView.setAdapter(adapter);
+
+
+
+
+		add_count = (Button) findViewById(R.id.add_account);
+		add_count.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				/*int count;
+				count = adapter.getCount();//count가 있는 게 갖고 온 layout이 simple_list_item_single_choice이기 때문!!!*/
+
+				//items.add("가나다의 계좌" + Integer.toString(count + 1));
+				items.add((int)((Math.random()*9999)+1) + "-" + (int)(Math.random()*9)+1 + "-" + (int)(Math.random()*9999999)+1);//계좌번호
+
+				adapter.notifyDataSetChanged();
+
+
+
+			}
+		});
 
 
 
