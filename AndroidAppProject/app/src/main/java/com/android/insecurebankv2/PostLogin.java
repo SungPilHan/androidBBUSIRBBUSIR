@@ -40,6 +40,7 @@ public class PostLogin extends Activity {
 
 	TextView price;
 	TextView account_number;
+	TextView name;
 
 	//  The Textview that handles the root status display
 //	TextView root_status;
@@ -64,6 +65,8 @@ public class PostLogin extends Activity {
 //        checkEmulatorStatus();
 
 
+		name = (TextView) findViewById(R.id.name);
+		name.setText(uname);
 
 		image_back = (ImageView) findViewById(R.id.new_main_back);
 		image_back.setOnClickListener(new View.OnClickListener() {
