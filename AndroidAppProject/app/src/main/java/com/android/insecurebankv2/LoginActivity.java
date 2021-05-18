@@ -25,11 +25,12 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+
 import com.android.insecurebankv2.DoLogin;
 import com.marcohc.toasteroid.Toasteroid;
 
 /*
-The page that accepts username and the password from the user. The credentials 
+The page that accepts username and the password from the user. The credentials
 are then sent to the server and the user is allowed to proceed to the postlogin
 pages on a successful authentication
 @author Dinesh Shetty
@@ -61,6 +62,8 @@ public class LoginActivity extends Activity {
 //         button_CreateUser.setVisibility(View.GONE);
 //      }
 
+
+
 		imageView = (ImageView) findViewById(R.id.imageView3);
 
 		login_buttons = (Button) findViewById(R.id.login_button);
@@ -72,15 +75,17 @@ public class LoginActivity extends Activity {
 				performlogin();
 			}
 		});
-//        createuser_buttons = (Button) findViewById(R.id.button_CreateUser2);
-//        createuser_buttons.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                // TODO Auto-generated method stub
-//                createUser();
-//            }
-//        });
+
+
+        createuser_buttons = (Button) findViewById(R.id.button_CreateUser2);
+        createuser_buttons.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+			public void onClick(View view){
+				Intent intent = new Intent(LoginActivity.this, createuser.class);
+				startActivity(intent);
+			}
+        });
 //
 //        try {
 //            fillData();
@@ -115,6 +120,7 @@ public class LoginActivity extends Activity {
 //            }
 //        });
 
+		//메뉴
 		imageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View view) {
@@ -123,8 +129,6 @@ public class LoginActivity extends Activity {
 				popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
-
-
 						if (item.getItemId() == R.id.setNetwork){
 							Intent intent = new Intent(getApplicationContext(), FilePrefActivity.class);
 							startActivity(intent);
@@ -134,10 +138,8 @@ public class LoginActivity extends Activity {
 							Intent intent2 = new Intent(getApplicationContext(), LoginActivity.class);
 							startActivity(intent2);
 						}
-
 						return false;
 					}
-
 				});
 				popupMenu.show();
 			}
@@ -163,6 +165,9 @@ public class LoginActivity extends Activity {
     if the user has logged in successfully atleast one earlier using
     that device
     */
+
+
+
 	protected void fillData() throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		// TODO Auto-generated method stub
 		SharedPreferences settings = getSharedPreferences(MYPREFS, 0);
@@ -202,6 +207,8 @@ public class LoginActivity extends Activity {
     Username_Text: Username entered by the user
     Password_Text: password entered by the user
     */
+
+
 	protected void performlogin() {
 		// TODO Auto-generated method stub
 		Username_Text = (EditText) findViewById(R.id.loginscreen_username);
@@ -217,4 +224,6 @@ public class LoginActivity extends Activity {
 		Intent i = new Intent(this, FilePrefActivity.class);
 		startActivity(i);
 	}
+
+
 }

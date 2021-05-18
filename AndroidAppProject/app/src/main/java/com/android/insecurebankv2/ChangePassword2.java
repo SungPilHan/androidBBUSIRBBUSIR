@@ -37,6 +37,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,31 +53,37 @@ module. This new password can then be used by the user to log in to the account.
 @author Dinesh Shetty
 */
 public class ChangePassword2 extends Activity {
-    ImageView image_back;
+
+    ImageView image_back; // 뒤로가기
     //	The EditText that holds the new password entered by the user
-    EditText changePassword_text;
+    EditText changePassword_text; // 비밀번호 입력
+    EditText changePassword_text2; // 비밀번호 한 번 더 입력
+
+
     //	The TextView that automatically grabs the current logged in user's username
-    EditText editText_Username;
+    TextView textView_Username;
     // The Button that maps to the change password-Submit button
-    Button changePassword_button;
+    Button changePassword_button; //등록
     //	Regex to ensure password is complex enough
-//    private static final String PASSWORD_PATTERN =
-//            "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
-//    private Pattern pattern;
-//    private Matcher matcher;
-//    String uname;
-//    String result;
-//    BufferedReader reader;
-//    String serverip = "";
-//    String serverport = "";
-//    String protocol = "http://";
-//    SharedPreferences serverDetails;
+
+    private static final String PASSWORD_PATTERN =
+            "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
+    private Pattern pattern;
+    private Matcher matcher;
+    String uname;
+    String result;
+    BufferedReader reader;
+    String serverip = "";
+    String serverport = "";
+    String protocol = "http://";
+    SharedPreferences serverDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_changepass);
 
+        //뒤로가기 이미지 버튼
         image_back = (ImageView) findViewById(R.id.changepasswd_back);
         image_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,165 +93,171 @@ public class ChangePassword2 extends Activity {
             }
         });
 
-//        // Get Server details from Shared Preference file.
-//        serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
-//        serverip = serverDetails.getString("serverip", null);
-//        serverport = serverDetails.getString("serverport", null);
+        // Get Server details from Shared Preference file.
+        serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
+        serverip = serverDetails.getString("serverip", null);
+        serverport = serverDetails.getString("serverport", null);
 
-//        changePassword_text = (EditText) findViewById(R.id.editText_newPassword);
-//        Intent intent = getIntent();
-//        uname = intent.getStringExtra("uname");
-//        System.out.println("newpassword=" + uname);
-//        editText_Username = (EditText) findViewById(R.id.editText_Username);
-//        editText_Username.setText(uname);
+        changePassword_text = (EditText) findViewById(R.id.editText_newPassword);
+
+
+        Intent intent = getIntent();
+        uname = intent.getStringExtra("uname");
+        System.out.println("newpassword=" + uname);
+        textView_Username = (TextView) findViewById(R.id.textView_Username);
+        textView_Username.setText(uname);
 
         // Manage the change password button click
-//        changePassword_button = (Button) findViewById(R.id.button_newPasswordSubmit);
-//        changePassword_button.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                // TODO Auto-generated method stub
-//                new RequestChangePasswordTask().execute(uname);
-//            }
-//        });
-//    }
-//    class RequestChangePasswordTask extends AsyncTask < String, String, String > {
-//
-//        @Override
-//        protected String doInBackground(String...params) {
-//
-//            try {
-//                postData(params[0]);
-//            } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException | IOException | JSONException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//
-//            return null;
-//        }
-//
-//        protected void onPostExecute(Double result) {
-//
-//        }
-//        protected void onProgressUpdate(Integer...progress) {
-//
-//        }
-//
-//        /*
-//        The function that makes an HTTP Post to the server endpoint that handles the
-//        change password operation.
-//        */
-//        public void postData(String valueIWantToSend) throws ClientProtocolException, IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-//            HttpClient httpclient = new DefaultHttpClient();
-//            HttpPost httppost = new HttpPost(protocol + serverip + ":" + serverport + "/changepassword");
-//            List < NameValuePair > nameValuePairs = new ArrayList < NameValuePair > (2);
-//
-//			/*
-//			   Delete below test accounts once the application goes into production phase.
-//			   nameValuePairs.add(new BasicNameValuePair("username", "jack"));
-//			   nameValuePairs.add(new BasicNameValuePair("password", "Jack@123$"));
-//			 */
-//            nameValuePairs.add(new BasicNameValuePair("username", uname));
-//            nameValuePairs.add(new BasicNameValuePair("newpassword", changePassword_text.getText().toString()));
-//            HttpResponse responseBody;
-//            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-//            pattern = Pattern.compile(PASSWORD_PATTERN);
-//            matcher = pattern.matcher(changePassword_text.getText().toString());
-//
-//            // Check if the password is complex enough
-//            boolean isStrong= matcher.matches();
-//            if (isStrong){
-//                responseBody = httpclient.execute(httppost);
-//                InputStream in = responseBody.getEntity().getContent();
-//                result = convertStreamToString( in );
-//                result = result.replace("\n", "");
-//
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (result != null) {
-//                            if (result.indexOf("Change Password Successful") != -1) {
-//                                //	Below code handles the Json response parsing
-//                                JSONObject jsonObject;
-//                                try {
-//                                    jsonObject = new JSONObject(result);
-//                                    String login_response_message = jsonObject.getString("message");
-//                                    Toast.makeText(getApplicationContext(), login_response_message + ". Restart application to Continue.", Toast.LENGTH_LONG).show();
-//                                    TelephonyManager phoneManager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-//                                    String phoneNumber = phoneManager.getLine1Number();
-//                                    System.out.println("phonno:"+phoneNumber);
-//
-//                                    /*
-//                                    The function that handles the SMS activity
-//                                    phoneNumber: Phone number to which the confirmation SMS is to be sent
-//                                    */
-//
-//                                    broadcastChangepasswordSMS(phoneNumber, changePassword_text.getText().toString());
-//
-//
-//                                } catch (JSONException e) {
-//                                    // TODO Auto-generated catch block
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//            else
-//            {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(getApplicationContext(), "Entered password is not complex enough.", Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//            }
-//        }
-//
-//
-//        private String convertStreamToString(InputStream in ) throws IOException {
-//            // TODO Auto-generated method stub
-//            try {
-//                reader = new BufferedReader(new InputStreamReader( in , "UTF-8"));
-//            } catch (UnsupportedEncodingException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//            StringBuilder sb = new StringBuilder();
-//            String line = null;
-//            while ((line = reader.readLine()) != null) {
-//                sb.append(line + "\n");
-//            } in .close();
-//            return sb.toString();
-//        }
-//
-//    }
-//
-//    private void broadcastChangepasswordSMS(String phoneNumber, String pass) {
-//
-//        if(TextUtils.isEmpty(phoneNumber.toString().trim())) {
-//
-//            System.out.println("Phone number Invalid.");
-//        }
-//        else
-//        {
-//            Intent smsIntent = new Intent();
-//            smsIntent.setAction("theBroadcast");
-//            //   String actdns= smsIntent.getAction().toString();
-//            //  Toast.makeText(getApplicationContext(),actdns , Toast.LENGTH_LONG).show();
-//            smsIntent.putExtra("phonenumber", phoneNumber);
-//            smsIntent.putExtra("newpass", pass);
-//            sendBroadcast(smsIntent);
-//        }
-//
-//    }
+        changePassword_button = (Button) findViewById(R.id.button_newPasswordSubmit);
+        changePassword_button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new RequestChangePasswordTask().execute(uname);
+            }
+        });
+    }
+    class RequestChangePasswordTask extends AsyncTask < String, String, String > {
+
+        @Override
+        protected String doInBackground(String...params) {
+
+            try {
+                postData(params[0]);
+            } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException | IOException | JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(Double result) {
+
+        }
+        protected void onProgressUpdate(Integer...progress) {
+
+        }
+
+        /*
+        The function that makes an HTTP Post to the server endpoint that handles the
+        change password operation.
+        */
+        public void postData(String valueIWantToSend) throws ClientProtocolException, IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(protocol + serverip + ":" + serverport + "/changepassword");
+            List < NameValuePair > nameValuePairs = new ArrayList < NameValuePair > (2);
+
+			/*
+			   Delete below test accounts once the application goes into production phase.
+			   nameValuePairs.add(new BasicNameValuePair("username", "jack"));
+			   nameValuePairs.add(new BasicNameValuePair("password", "Jack@123$"));
+			 */
+            nameValuePairs.add(new BasicNameValuePair("username", uname));
+            nameValuePairs.add(new BasicNameValuePair("newpassword", changePassword_text.getText().toString()));
+            HttpResponse responseBody;
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            pattern = Pattern.compile(PASSWORD_PATTERN);
+            matcher = pattern.matcher(changePassword_text.getText().toString());
+
+            // Check if the password is complex enough
+            boolean isStrong= matcher.matches();
+            if (isStrong){
+                responseBody = httpclient.execute(httppost);
+                InputStream in = responseBody.getEntity().getContent();
+                result = convertStreamToString( in );
+                result = result.replace("\n", "");
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (result != null) {
+
+
+                            if (result.indexOf("Change Password Successful") != -1) {
+                                //	Below code handles the Json response parsing
+                                JSONObject jsonObject;
+                                try {
+                                    jsonObject = new JSONObject(result);
+                                    String login_response_message = jsonObject.getString("message");
+                                    Toast.makeText(getApplicationContext(), login_response_message + ". Restart application to Continue.", Toast.LENGTH_LONG).show();
+                                    TelephonyManager phoneManager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+                                    String phoneNumber = phoneManager.getLine1Number();
+                                    System.out.println("phonno:"+phoneNumber);
+
+                                    /*
+                                    The function that handles the SMS activity
+                                    phoneNumber: Phone number to which the confirmation SMS is to be sent
+                                    */
+
+                                    broadcastChangepasswordSMS(phoneNumber, changePassword_text.getText().toString());
+
+
+                                } catch (JSONException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        }
+                    }
+                });
+            }
+            else
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Entered password is not complex enough.", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }
+
+
+        private String convertStreamToString(InputStream in ) throws IOException {
+            // TODO Auto-generated method stub
+            try {
+                reader = new BufferedReader(new InputStreamReader( in , "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            } in .close();
+            return sb.toString();
+        }
+
+    }
+
+    private void broadcastChangepasswordSMS(String phoneNumber, String pass) {
+
+        if(TextUtils.isEmpty(phoneNumber.toString().trim())) {
+
+            System.out.println("Phone number Invalid.");
+        }
+        else
+        {
+            Intent smsIntent = new Intent();
+            smsIntent.setAction("theBroadcast");
+            //   String actdns= smsIntent.getAction().toString();
+            //  Toast.makeText(getApplicationContext(),actdns , Toast.LENGTH_LONG).show();
+            smsIntent.putExtra("phonenumber", phoneNumber);
+            smsIntent.putExtra("newpass", pass);
+            sendBroadcast(smsIntent);
+        }
+
+    }
+
 //
 //    public void callPreferences() {
 //        // TODO Auto-generated method stub
 //        Intent i = new Intent(this, FilePrefActivity.class);
 //        startActivity(i);
 //    }
-    }
 }
