@@ -1,6 +1,7 @@
 #-*-coding:utf-8-*-
 import getopt
 from flask.wrappers import Response
+from sqlalchemy.sql.expression import or_
 import web
 import sys
 from cheroot import wsgi
@@ -51,7 +52,7 @@ def login():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    return render_template('sign_up.html')
+    return render_template('signup.html')
 
 @app.route('/idcheck', methods=['POST'])
 def idcheck():
@@ -189,6 +190,26 @@ def accountadd():
 		data = {"message" : Responsemsg}
 	print(makejson(data))
 	return makejson(data)
+
+#이체 내역 조회 기능
+@app.route('/searchtransferhistory', methods=['GET','POST'])
+def searchtransferhistory():
+	account=int(request.form['account'])
+	u = History.query.filter(or_(History.from_acc==account, History.to_acc==account)).order_by(History.id.desc()).all()
+	balance = Account.query.filter(Account.accountNo==account).first().balance
+	historylist=[]
+	amount = 0
+	for i in u:
+		if i.from_acc==account:
+			balance += amount
+			js = {"display_acc" : i.to_acc, "amount" : -(i.amount), "balance" : balance}
+		else:
+			balance -= amount
+			js = {"display_acc" : i.from_acc, "amount" : i.amount, "balance" : balance}
+		amount = i.amount
+		historylist.append(js)
+	print(historylist)
+	return render_template('searchtransferhistory.html', historylist=historylist)
 
 '''
 The function provides login mechanism to a developer user during development phase

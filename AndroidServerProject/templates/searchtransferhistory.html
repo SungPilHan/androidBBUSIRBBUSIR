@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>계좌 내역 조회 페이지</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        tr:nth-child(2n+0){background-color: #FFD044;}
+    </style>
+  </head>
+  <body>
+    <table style="width: 350px; font-size: larger; border:1px solid">
+        {% for history in historylist %}
+            <tr>
+                <td style="text-align: left; vertical-align: top; width: 250px">
+                    <b>{{ history.display_acc }}</b>
+                </td>
+                <td style="text-align: right; border-left: none;">
+                    {{ history.amount }}
+                    <br>
+                    {{ history.balance }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+  </body>
+</html>
