@@ -1,3 +1,4 @@
+#-*-coding:utf-8-*-
 import getopt
 from flask.wrappers import Response
 import web
