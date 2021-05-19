@@ -226,7 +226,7 @@ if __name__ == '__main__':
 
 	urls = ("/.*", "app")
 	apps = web.application(urls, globals())
-	server = wsgi.Server(("127.0.0.1", port),app,server_name='localhost')
+	server = wsgi.Server(("0.0.0.0", port),app,server_name='localhost')
 	print("The server is hosted on port:",(port))
 	
 	try:
