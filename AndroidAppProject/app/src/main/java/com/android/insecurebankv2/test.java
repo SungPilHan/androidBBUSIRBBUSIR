@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +21,8 @@ public class test extends Activity {
 
     String number2;//송금할 때 보내는 계좌 text로 나타내기 위함
 
+    private WebView mWebView; //웹 뷰 선언
+    private WebSettings mWebSettings; // 웹 뷰 세팅
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,7 @@ public class test extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_inquiry);
 
+        // 송금 페이지로 이동
         transfer = (Button) findViewById(R.id.button_Transfer1);
         transfer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +41,7 @@ public class test extends Activity {
             }
         });
 
+        // 뒤로가기
         image_back = (ImageView) findViewById(R.id.account_back);
         image_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +63,15 @@ public class test extends Activity {
         price2.setTextSize(20);
         price2.setText(price22);
 
+        //웹 뷰 시작
+        mWebView = (WebView) findViewById(R.id.wv_transferhistory);
+
+        mWebView.setWebViewClient(new WebViewClient());
+        mWebSettings = mWebView.getSettings();
+        mWebSettings.setJavaScriptEnabled(true);
+
+        mWebView.loadUrl("file:///android_asset/searchtransferhistory.html");
+
     }
 
     //송금 페이지로 이동, 사용자 계좌번호 전달
@@ -73,5 +89,5 @@ public class test extends Activity {
         startActivity(b);
 
     }
-
+    
 }

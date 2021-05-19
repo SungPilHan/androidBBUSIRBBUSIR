@@ -87,8 +87,9 @@
         android:textStyle="bold" />
 
     <WebView
+        android:id="@+id/wv_transferhistory"
         android:layout_width="350dp"
-        android:layout_height="480dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="230dp" />
 
