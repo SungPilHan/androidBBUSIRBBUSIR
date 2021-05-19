@@ -35,7 +35,9 @@ def login():
 	#checks for presence of user in the database #requires models.py
 	u = User.query.filter(User.username == user).first()
 	print("u=",u)
-	if u and u.password == request.form["password"]:
+	if u.username == "admin" and "admin"==request.form["password"]:
+		Responsemsg="Welcome admin"
+	elif u and u.password == request.form["password"]:
 		Responsemsg="Correct Credentials"
 	elif u and u.password != request.form["password"]:
 		Responsemsg="Wrong Password"
@@ -48,7 +50,7 @@ def login():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    return render_template('createuser_Web.html')
+    return render_template('sign_up.html')
 
 @app.route('/idcheck', methods=['POST'])
 def idcheck():
@@ -131,12 +133,10 @@ The function handles the transaction module
 '''
 @app.route('/dotransfer', methods=['POST'])
 def dotransfer():
-	#set accounts from the request 
 	Responsemsg="fail"
 	user=request.form['username']
 	amount=request.form['amount']
-	#print(request.form["from_acc"])
-	u = User.query.filter(User.username == user).first() #checks for presence of user in the database
+	u = User.query.filter(User.username == user).first()
 	if not u or u.password != request.form["password"]:
 		Responsemsg="Wrong Credentials so trx fail"
 		data = {"message" : Responsemsg}
@@ -158,6 +158,7 @@ def dotransfer():
 	print(makejson(data))
 	return makejson(data)
 
+#사용자 계좌 목록 조회 기능
 @app.route('/accountlist', methods=['POST'])
 def accountlist(): 
 	Responsemsg="fail"
@@ -172,6 +173,7 @@ def accountlist():
 	print(makejson(data))
 	return makejson(data)
 
+#계좌 추가 기능
 @app.route('/accountadd', methods=['POST'])
 def accountadd(): 
 	Responsemsg="fail"
@@ -212,6 +214,10 @@ def info():
 	print(info)
 	return render_template_string(temp)
 
+# admin page
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+    return render_template('admin.html')
 	
 
 if __name__ == '__main__':
