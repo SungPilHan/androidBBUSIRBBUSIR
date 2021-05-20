@@ -70,28 +70,23 @@ public class DoLogin extends Activity {
 
         // Get Server details from Shared Preference file.
 		serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
-		serverip = serverDetails.getString("serverip", null);
-		serverport = serverDetails.getString("serverport", null);
+		serverip = serverDetails.getString("serverip", "3.20.202.177");
+		serverport = serverDetails.getString("serverport", "8888");
         if(serverip!=null && serverport!=null){
-
-		Intent data = getIntent();
-		username = data.getStringExtra("passed_username");
-		password = data.getStringExtra("passed_password");
-		new RequestTask().execute("username");
-
+			Intent data = getIntent();
+			username = data.getStringExtra("passed_username");
+			password = data.getStringExtra("passed_password");
+			new RequestTask().execute("username");
         }
         else
         {
             Intent setupServerdetails =new Intent(this,FilePrefActivity.class);
             startActivity(setupServerdetails);
             Toasteroid.show(this, "Server path/port not set!!", Toasteroid.STYLES.WARNING, Toasteroid.LENGTH_SHORT);
-
-
         }
 	}
 
 	class RequestTask extends AsyncTask < String, String, String > {
-
 		@Override
 		protected String doInBackground(String...params) {
 			try {
@@ -100,30 +95,21 @@ public class DoLogin extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 			return null;
 		}
-
 		protected void onPostExecute(Double result) {}
 		protected void onProgressUpdate(Integer...progress) {}
-
 		public void postData(String valueIWantToSend) throws ClientProtocolException, IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-
-
-
 			// Create a new HttpClient and Post Header
-
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(protocol + serverip + ":" + serverport + "/login");
 			HttpPost httppost2 = new HttpPost(protocol + serverip + ":" + serverport + "/devlogin");
 
 			// Add your data
 			List < NameValuePair > nameValuePairs = new ArrayList < NameValuePair > (2);
-
 			//                Delete below test accounts in production
 			//                nameValuePairs.add(new BasicNameValuePair("username", "jack"));
 			//                nameValuePairs.add(new BasicNameValuePair("password", "jack@123$"));
-
 			nameValuePairs.add(new BasicNameValuePair("username", username));
 			nameValuePairs.add(new BasicNameValuePair("password", password));
 			HttpResponse responseBody;
@@ -162,7 +148,6 @@ public class DoLogin extends Activity {
 		private void trackUserLogins() {
 			// TODO Auto-generated method stub
 			runOnUiThread(new Runnable() {
-
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
@@ -170,10 +155,8 @@ public class DoLogin extends Activity {
 					values.put(TrackUserContentProvider.name, username);
 					// Inserts content into the Content Provider to track the logged in user's list
 					Uri uri = getContentResolver().insert(TrackUserContentProvider.CONTENT_URI, values);
-
 				}
 			});
-
 		}
 
 		/*
