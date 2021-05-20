@@ -42,14 +42,13 @@ public class FilePrefActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_network);
 
-		// Get Server details from Shared Preference file.
-		submitPref_buttonz = (Button) findViewById(R.id.submitPref_button);
 		edittext_serverip = (EditText) findViewById(R.id.edittext_serverip);
 		edittext_serverport = (EditText) findViewById(R.id.edittext_serverport);
-		back_imageView = (ImageView) findViewById(R.id.back_imageView);
-		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		editor = preferences.edit();
-		submitPref_buttonz.setOnClickListener(new View.OnClickListener() {@Override
+
+		// Get Server details from Shared Preference file.
+		submitPref_buttonz = (Button) findViewById(R.id.submitPref_button);
+		submitPref_buttonz.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//  Save the user entered IP address and port number in a local shared preference file
@@ -57,19 +56,16 @@ public class FilePrefActivity extends Activity {
 			}
 		});
 
+		back_imageView = (ImageView) findViewById(R.id.back_imageView);
 		back_imageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-				startActivity(intent);
+				finish();
 			}
 		});
-	}
 
-	public void callPreferences() {
-		// TODO Auto-generated method stub
-		Intent i = new Intent(this, FilePrefActivity.class);
-		startActivity(i);
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		editor = preferences.edit();
 	}
 
 	/*
@@ -88,31 +84,24 @@ public class FilePrefActivity extends Activity {
 
         Pattern p = Pattern.compile(IP_PATTERN);
         Matcher m = p.matcher(serveripSaved);
-        if (serveripSaved!=null && m.matches())
-        {
+        if (serveripSaved!=null && m.matches()) {
 
             String PORT_PATTERN="(6553[0-5]|655[0-2]\\d|65[0-4]\\d{2}|6[0-4]\\d{3}|[1-5]\\d{4}|[1-9]\\d{0,3})";
             Pattern p2 = Pattern.compile(PORT_PATTERN);
             Matcher m2 = p2.matcher(serverportSaved);
-            if (serverportSaved!=null && m2.matches())
-            {
+            if (serverportSaved!=null && m2.matches()) {
                 editor.putString("serverip", serveripSaved);
                 editor.putString("serverport", serverportSaved);
                 editor.commit();
 				Toasteroid.show(this, "Server Configured Successfully!!", Toasteroid.STYLES.SUCCESS, Toasteroid.LENGTH_SHORT);
-
 				finish();
             }
-            else
-            {
+            else {
                 Toasteroid.show(this, "Invalid Port entered!!", Toasteroid.STYLES.ERROR, Toasteroid.LENGTH_SHORT);
             }
         }
-        else
-        {
+        else {
             Toasteroid.show(this, "Invalid Server IP!!", Toasteroid.STYLES.ERROR, Toasteroid.LENGTH_SHORT);
         }
-
 	}
-
 }
