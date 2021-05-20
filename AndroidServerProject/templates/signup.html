@@ -16,7 +16,7 @@
         else{
           $.ajax({
             cache: false,
-            url: "http://3.20.202.177:8888/idcheck",
+            url: "http://ec2-3-20-202-177.us-east-2.compute.amazonaws.com:8888/idcheck",
             type: "post",
             data: "username="+username,
             success: function(data){
@@ -58,7 +58,7 @@
           else{
             $.ajax({
             cache: false,
-            url: "http://3.20.202.177:8888/join",
+            url: "http://ec2-3-20-202-177.us-east-2.compute.amazonaws.com:8888/join",
             type: "post",
             data: "username="+username+"&password="+password,
             success: function(data){
