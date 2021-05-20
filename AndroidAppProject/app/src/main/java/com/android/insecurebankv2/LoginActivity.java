@@ -171,10 +171,4 @@ public class LoginActivity extends Activity {
 		i.putExtra("passed_password", Password_Text.getText().toString());
 		startActivity(i);
 	}
-
-	public void callPreferences() {
-		// TODO Auto-generated method stub
-		Intent i = new Intent(this, FilePrefActivity.class);
-		startActivity(i);
-	}
 }
