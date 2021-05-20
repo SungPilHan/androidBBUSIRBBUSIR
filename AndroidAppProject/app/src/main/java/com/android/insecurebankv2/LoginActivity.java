@@ -56,71 +56,7 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_log_main);
-//      String mess = getResources().getString(R.string.is_admin);
-//      if (mess.equals("no")) {
-//         View button_CreateUser = findViewById(R.id.button_CreateUser2);
-//         button_CreateUser.setVisibility(View.GONE);
-//      }
-
-
-
 		imageView = (ImageView) findViewById(R.id.imageView3);
-
-		login_buttons = (Button) findViewById(R.id.login_button);
-		login_buttons.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				performlogin();
-			}
-		});
-
-
-        createuser_buttons = (Button) findViewById(R.id.button_CreateUser2);
-        createuser_buttons.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-			public void onClick(View view){
-				Intent intent = new Intent(LoginActivity.this, createuser.class);
-				startActivity(intent);
-			}
-        });
-//
-//        try {
-//            fillData();
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        } catch (InvalidKeyException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchPaddingException e) {
-//            e.printStackTrace();
-//        } catch (InvalidAlgorithmParameterException e) {
-//            e.printStackTrace();
-//        } catch (IllegalBlockSizeException e) {
-//            e.printStackTrace();
-//        } catch (BadPaddingException e) {
-//            e.printStackTrace();
-//        }
-
-//      fillData_button = (Button) findViewById(R.id.fill_data);
-//      fillData_button.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                // TODO Auto-generated method stub
-//                try {
-//                    fillData();
-//                } catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-
-		//메뉴
 		imageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View view) {
@@ -144,36 +80,55 @@ public class LoginActivity extends Activity {
 				popupMenu.show();
 			}
 		});
+
+		login_buttons = (Button) findViewById(R.id.login_button);
+		login_buttons.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				performlogin();
+			}
+		});
+
+		createuser_buttons = (Button) findViewById(R.id.button_CreateUser2);
+        createuser_buttons.setOnClickListener(new View.OnClickListener() {
+            @Override
+			public void onClick(View view){
+				Intent intent = new Intent(LoginActivity.this, createuser.class);
+				startActivity(intent);
+			}
+        });
+
+        try {
+            fillData();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
 	}
-
-//onCreate
-
-
-    /*
-    The function that allows the user to create new user credentials.
-    This functionality is available only to the admin user.
-    <<WIP Code>>
-    ToDo: Add functionality here.
-    */
-//    protected void createUser() {
-//        Toasteroid.show(this, "Create User functionality is still Work-In-Progress!!", Toasteroid.STYLES.WARNING, Toasteroid.LENGTH_LONG);
-//
-//    }
 
 	/*
     The function that allows the user to autofill the credentials
     if the user has logged in successfully atleast one earlier using
     that device
     */
-
-
-
 	protected void fillData() throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		// TODO Auto-generated method stub
 		SharedPreferences settings = getSharedPreferences(MYPREFS, 0);
 		final String username = settings.getString("EncryptedUsername", null);
 		final String password = settings.getString("superSecurePassword", null);
-
 
 		if(username!=null && password!=null)
 		{
@@ -193,11 +148,11 @@ public class LoginActivity extends Activity {
 		}
 		else if (username==null || password==null)
 		{
-			//  Toast.makeText(this, "No stored credentials found!!", Toast.LENGTH_LONG).show();
+			//Toast.makeText(this, "No stored credentials found!!", Toast.LENGTH_LONG).show();
 		}
 		else
 		{
-			//  Toast.makeText(this, "No stored credentials found!!", Toast.LENGTH_LONG).show();
+			//Toast.makeText(this, "No stored credentials found!!", Toast.LENGTH_LONG).show();
 		}
 
 	}
@@ -207,8 +162,6 @@ public class LoginActivity extends Activity {
     Username_Text: Username entered by the user
     Password_Text: password entered by the user
     */
-
-
 	protected void performlogin() {
 		// TODO Auto-generated method stub
 		Username_Text = (EditText) findViewById(R.id.loginscreen_username);
@@ -224,6 +177,4 @@ public class LoginActivity extends Activity {
 		Intent i = new Intent(this, FilePrefActivity.class);
 		startActivity(i);
 	}
-
-
 }
