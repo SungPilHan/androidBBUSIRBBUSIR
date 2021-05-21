@@ -114,8 +114,6 @@ public class DoTransfer extends Activity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 new RequestDoTransferTask().execute("username");
-                gototest();
-                finish();
             }
         });
     }
@@ -206,6 +204,7 @@ public class DoTransfer extends Activity {
                         @Override
                         public void run(){
                             Toast.makeText(getApplicationContext(), "Transfer Done", Toast.LENGTH_LONG).show();
+                            finish();
                         }
                     });
                     Log.d("Result : ", "transfer Done");
