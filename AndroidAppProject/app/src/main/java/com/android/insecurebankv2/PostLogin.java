@@ -285,15 +285,9 @@ public class PostLogin extends Activity {
 
 	//비밀번호 변경 페이지로 이동, 사용자 id 전달
 	private void testchangepw() {
-
-		Intent cp = new Intent(getApplicationContext(), ChangePassword2.class);
-		startActivity(cp);
-
 		Intent b = new Intent(this, ChangePassword2.class);
-
 		b.putExtra("uname", name.getText().toString());
 		startActivity(b);
-
 	}
 
 	// 전송(계좌내역조회) 페이지로 금액, 계좌 값 전달

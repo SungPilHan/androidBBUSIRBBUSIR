@@ -57,13 +57,14 @@ public class test extends Activity {
         String balance = intent.getStringExtra("balance");
         price2.setTextSize(20);
         price2.setText(balance);
+
+        mWebView = (WebView) findViewById(R.id.wv_transferhistory);
     }
 
     @Override
     public void onResume(){
         super.onResume();
         //웹 뷰 시작
-        mWebView = (WebView) findViewById(R.id.wv_transferhistory);
         mWebView.setWebViewClient(new WebViewClient());
         String postdata = "account="+number2;
         mWebView.postUrl("http://3.20.202.177:8888/searchtransferhistory", postdata.getBytes());

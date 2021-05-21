@@ -12,11 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -27,19 +25,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.telephony.TelephonyManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,11 +38,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/*
-The page that accepts new password and passes it on to the change password
-module. This new password can then be used by the user to log in to the account.
-@author Dinesh Shetty
-*/
 public class ChangePassword2 extends Activity {
 
     ImageView image_back; // 뒤로가기
@@ -88,18 +74,17 @@ public class ChangePassword2 extends Activity {
         image_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent pL = new Intent(getApplicationContext(), PostLogin.class);
-                startActivity(pL);
+                finish();
             }
         });
 
         // Get Server details from Shared Preference file.
         serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
-        serverip = serverDetails.getString("serverip", null);
-        serverport = serverDetails.getString("serverport", null);
+        serverip = serverDetails.getString("serverip", "3.20.202.177");
+        serverport = serverDetails.getString("serverport", "8888");
 
         changePassword_text = (EditText) findViewById(R.id.editText_newPassword);
-
+        changePassword_text2 = (EditText) findViewById(R.id.editText_newPassword2);
 
         Intent intent = getIntent();
         uname = intent.getStringExtra("uname");
@@ -110,18 +95,23 @@ public class ChangePassword2 extends Activity {
         // Manage the change password button click
         changePassword_button = (Button) findViewById(R.id.button_newPasswordSubmit);
         changePassword_button.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                new RequestChangePasswordTask().execute(uname);
+                if(changePassword_text.getText().toString().isEmpty() || changePassword_text2.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "비밀번호를 모두 입력해주세요!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    new RequestChangePasswordTask().execute(uname);
+                }
             }
         });
     }
-    class RequestChangePasswordTask extends AsyncTask < String, String, String > {
+
+    class RequestChangePasswordTask extends AsyncTask<String, String, String> {
 
         @Override
-        protected String doInBackground(String...params) {
+        protected String doInBackground(String... params) {
 
             try {
                 postData(params[0]);
@@ -136,7 +126,7 @@ public class ChangePassword2 extends Activity {
         protected void onPostExecute(Double result) {
 
         }
-        protected void onProgressUpdate(Integer...progress) {
+        protected void onProgressUpdate(Integer... progress) {
 
         }
 
@@ -147,7 +137,7 @@ public class ChangePassword2 extends Activity {
         public void postData(String valueIWantToSend) throws ClientProtocolException, IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(protocol + serverip + ":" + serverport + "/changepassword");
-            List < NameValuePair > nameValuePairs = new ArrayList < NameValuePair > (2);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 
 			/*
 			   Delete below test accounts once the application goes into production phase.
@@ -162,11 +152,11 @@ public class ChangePassword2 extends Activity {
             matcher = pattern.matcher(changePassword_text.getText().toString());
 
             // Check if the password is complex enough
-            boolean isStrong= matcher.matches();
-            if (isStrong){
+            boolean isStrong = matcher.matches();
+            if (isStrong) {
                 responseBody = httpclient.execute(httppost);
                 InputStream in = responseBody.getEntity().getContent();
-                result = convertStreamToString( in );
+                result = convertStreamToString(in);
                 result = result.replace("\n", "");
 
                 runOnUiThread(new Runnable() {
@@ -182,31 +172,17 @@ public class ChangePassword2 extends Activity {
                                     jsonObject = new JSONObject(result);
                                     String login_response_message = jsonObject.getString("message");
                                     Toast.makeText(getApplicationContext(), login_response_message + ". Restart application to Continue.", Toast.LENGTH_LONG).show();
-                                    TelephonyManager phoneManager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                                    String phoneNumber = phoneManager.getLine1Number();
-                                    System.out.println("phonno:"+phoneNumber);
-
-                                    /*
-                                    The function that handles the SMS activity
-                                    phoneNumber: Phone number to which the confirmation SMS is to be sent
-                                    */
-
-                                    broadcastChangepasswordSMS(phoneNumber, changePassword_text.getText().toString());
-
-
                                 } catch (JSONException e) {
                                     // TODO Auto-generated catch block
                                     e.printStackTrace();
                                 }
-
-
+                                finish();
                             }
                         }
                     }
                 });
             }
-            else
-            {
+            else{
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -215,7 +191,6 @@ public class ChangePassword2 extends Activity {
                 });
             }
         }
-
 
         private String convertStreamToString(InputStream in ) throws IOException {
             // TODO Auto-generated method stub
@@ -234,30 +209,4 @@ public class ChangePassword2 extends Activity {
         }
 
     }
-
-    private void broadcastChangepasswordSMS(String phoneNumber, String pass) {
-
-        if(TextUtils.isEmpty(phoneNumber.toString().trim())) {
-
-            System.out.println("Phone number Invalid.");
-        }
-        else
-        {
-            Intent smsIntent = new Intent();
-            smsIntent.setAction("theBroadcast");
-            //   String actdns= smsIntent.getAction().toString();
-            //  Toast.makeText(getApplicationContext(),actdns , Toast.LENGTH_LONG).show();
-            smsIntent.putExtra("phonenumber", phoneNumber);
-            smsIntent.putExtra("newpass", pass);
-            sendBroadcast(smsIntent);
-        }
-
-    }
-
-//
-//    public void callPreferences() {
-//        // TODO Auto-generated method stub
-//        Intent i = new Intent(this, FilePrefActivity.class);
-//        startActivity(i);
-//    }
 }
