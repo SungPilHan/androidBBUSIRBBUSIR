@@ -76,7 +76,7 @@ public class test extends Activity {
     private void trans_account() {
         Intent b = new Intent(this, DoTransfer.class);
         b.putExtra("account", account_number2.getText().toString());
-        b.putExtra("balance", )
+        b.putExtra("balance", price2.getText().toString());
         startActivity(b);
         finish();
     }
