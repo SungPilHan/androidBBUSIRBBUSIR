@@ -141,6 +141,7 @@ public class PostLogin extends Activity {
 
 				//items.add("가나다의 계좌" + Integer.toString(count + 1));
 				items.add((int)((Math.random()*9999)+1) + "-" + (int)(Math.random()*9)+1 + "-" + (int)(Math.random()*9999999)+1);//계좌번호
+				//items.add("111111");
 
 				adapter.notifyDataSetChanged();
 
