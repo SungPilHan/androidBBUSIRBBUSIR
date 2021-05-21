@@ -82,7 +82,7 @@
         android:layout_marginTop="313dp"
         android:layout_marginEnd="168dp"
         android:layout_marginBottom="391dp"
-        android:text="1111-22-3333333"
+        android:text="111111"
         android:textSize="20sp" />
 
     <!--        <Button-->
