@@ -7,7 +7,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.crypto.BadPaddingException;
@@ -94,12 +96,16 @@ public class DoLogin extends Activity {
 			} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException | IOException | JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (CertificateException e) {
+				e.printStackTrace();
+			} catch (KeyStoreException e) {
+				e.printStackTrace();
 			}
 			return null;
 		}
 		protected void onPostExecute(Double result) {}
 		protected void onProgressUpdate(Integer...progress) {}
-		public void postData(String valueIWantToSend) throws ClientProtocolException, IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+		public void postData(String valueIWantToSend) throws ClientProtocolException, IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, CertificateException, KeyStoreException {
 			// Create a new HttpClient and Post Header
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(protocol + serverip + ":" + serverport + "/login");
@@ -164,7 +170,7 @@ public class DoLogin extends Activity {
 		username: username entered by the user
 		password: password entered by the user
 		*/
-		private void saveCreds(String username, String password) throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+		private void saveCreds(String username, String password) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, CertificateException, KeyStoreException {
 			// TODO Auto-generated method stub
 			SharedPreferences mySharedPreferences;
 			mySharedPreferences = getSharedPreferences(MYPREFS, Activity.MODE_PRIVATE);
@@ -172,10 +178,25 @@ public class DoLogin extends Activity {
 			rememberme_username = username;
 			rememberme_password = password;
 			String base64Username = new String(Base64.encodeToString(rememberme_username.getBytes(), 4));
-			CryptoClass crypt = new CryptoClass();;
+			CryptoClass crypt = new CryptoClass();
+
+			RSACryptor rsa = new RSACryptor();
+			RSACryptor rsa2 = new RSACryptor();
+			rsa.createKey();
+			byte[] rsa_e_username = rsa.encrypt(username);
+			String rsa_d_username = rsa2.decrypt(rsa_e_username);
+			byte[] rsa_e_password = rsa.encrypt(password);
+			String rsa_d_password = rsa2.decrypt(rsa_e_password);
+
 			superSecurePassword = crypt.aesEncryptedString(rememberme_password);
 			editor.putString("EncryptedUsername", base64Username);
 			editor.putString("superSecurePassword", superSecurePassword);
+
+			editor.putString("rsa_e_username", rsa_e_username.toString());
+			editor.putString("rsa_d_username", rsa_d_username);
+			editor.putString("rsa_e_password", rsa_e_password.toString());
+			editor.putString("rsa_d_password", rsa_d_password);
+
 			editor.commit();
 		}
 
