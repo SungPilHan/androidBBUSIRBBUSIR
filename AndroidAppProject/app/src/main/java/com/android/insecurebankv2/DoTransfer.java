@@ -64,6 +64,7 @@ public class DoTransfer extends Activity {
 
     TextView editText_from;
     String from;
+    String balance;
 
     BufferedReader reader;
     //	The EditText that holds the to account number
@@ -96,6 +97,7 @@ public class DoTransfer extends Activity {
         //송금 페이지로 이동할 때 보내는 계좌 TextView에 사용자 계좌번호 전달
         Intent intent = getIntent();
         from = intent.getStringExtra("account");
+        balance = intent.getStringExtra("balance");
 
         editText_from = (TextView) findViewById(R.id.editText_from);
         editText_from.setText(from);
@@ -112,8 +114,17 @@ public class DoTransfer extends Activity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 new RequestDoTransferTask().execute("username");
+                gototest();
+                finish();
             }
         });
+    }
+
+    public void gototest(){
+        Intent a = new Intent(this, test.class);
+        a.putExtra("balance", balance);
+        a.putExtra("account", from);
+        startActivity(a);
     }
 
     public class RequestDoTransferTask extends AsyncTask<String, String, String> {

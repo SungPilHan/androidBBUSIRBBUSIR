@@ -303,8 +303,8 @@ public class PostLogin extends Activity {
 
 		Intent a = new Intent(this, test.class);
 
-		a.putExtra("passed_price", price.getText().toString());
-		a.putExtra("passed_account", account_number.getText().toString());
+		a.putExtra("balance", price.getText().toString());
+		a.putExtra("account", account_number.getText().toString());
 		startActivity(a);
 
 

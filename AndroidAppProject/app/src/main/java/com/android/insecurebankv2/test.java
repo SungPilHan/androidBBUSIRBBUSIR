@@ -48,14 +48,14 @@ public class test extends Activity {
         Intent intent = getIntent();
 
         account_number2 = (TextView)findViewById(R.id.account_number2);
-        number2 = intent.getStringExtra("passed_account");
+        number2 = intent.getStringExtra("account");
         account_number2.setTextSize(20);
         account_number2.setText(number2);
 
         price2 = (TextView) findViewById(R.id.price2);
-        String price22 = intent.getStringExtra("passed_price");
+        String balance = intent.getStringExtra("balance");
         price2.setTextSize(20);
-        price2.setText(price22);
+        price2.setText(balance);
 
         //웹 뷰 시작
         WebView mWebView = (WebView) findViewById(R.id.wv_transferhistory);
