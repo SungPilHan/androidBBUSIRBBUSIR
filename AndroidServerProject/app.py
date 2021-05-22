@@ -8,7 +8,12 @@ from cheroot import wsgi
 from flask import Flask, request, request_started, render_template_string, render_template
 from functools import wraps
 from models import History, User, Account
-from database import db_session
+from requests import get
+ip = get("https://api.ipify.org").text
+if(ip=="3.20.202.177"):
+	from database import db_session
+else:
+	from database_mysql import db_session
 import simplejson as json
 makejson = json.dumps
 app = Flask(__name__)
