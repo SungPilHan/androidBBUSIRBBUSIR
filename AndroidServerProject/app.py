@@ -1,7 +1,8 @@
 #-*-coding:utf-8-*-
 import getopt
+import re
 from flask.wrappers import Response
-from sqlalchemy.sql.expression import or_
+from sqlalchemy.sql.expression import null, or_, true
 import web
 import sys
 from cheroot import wsgi
@@ -57,7 +58,8 @@ def login():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    return render_template('signup.html')
+	print(ip)
+	return render_template('signup.html', ip=ip)
 
 @app.route('/idcheck', methods=['POST'])
 def idcheck():
@@ -244,10 +246,17 @@ def info():
 # admin page
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
-    return render_template('admin.html')
+	print(ip)
+	return render_template('admin.html', ip=ip)
 	
 
-if __name__ == '__main__':
+if __name__ == '__main__':		
+	p = '^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$'
+	while True and ip !="3.20.202.177":
+		ip = input("실습에 사용할 ip를 입력해 주세요:")
+		if re.search(p,ip):
+			break
+
 	port = DEFAULT_PORT_NO
 	options, args = getopt.getopt(sys.argv[1:], "", ["help", "port="])
 	for op, arg1 in options:
