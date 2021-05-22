@@ -6,9 +6,9 @@ from sqlalchemy import Column, Integer, String
 from requests import get
 ip = get("https://api.ipify.org").text
 if(ip=="3.20.202.177"):
-    from database import db_session, Base
+    from database_mysql import db_session, Base
 else:
-	from database_mysql import db_session, Base
+	from database import db_session, Base
 #import settings
 
 class User(Base):
