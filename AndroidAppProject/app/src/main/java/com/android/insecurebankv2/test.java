@@ -2,7 +2,9 @@ package com.android.insecurebankv2;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -23,11 +25,20 @@ public class test extends Activity {
     TextView price2;
     String number2;//송금할 때 보내는 계좌 text로 나타내기 위함
     WebView mWebView;
+    String serverip = "";
+    String serverport = "";
+    String protocol = "http://";
+    SharedPreferences serverDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_inquiry);
+
+        serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
+        serverip = serverDetails.getString("serverip", "3.20.202.177");
+        serverport = serverDetails.getString("serverport", "8888");
+
         // 송금 페이지로 이동
         transfer = (Button) findViewById(R.id.button_Transfer1);
         transfer.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +78,8 @@ public class test extends Activity {
         //웹 뷰 시작
         mWebView.setWebViewClient(new WebViewClient());
         String postdata = "account="+number2;
-        mWebView.postUrl("http://3.20.202.177:8888/searchtransferhistory", postdata.getBytes());
+        String url = protocol + serverip + ":" + serverport + "/searchtransferhistory";
+        mWebView.postUrl(url, postdata.getBytes());
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setSaveFormData(false);
         mWebView.getSettings().setBuiltInZoomControls(false);

@@ -1,15 +1,23 @@
 package com.android.insecurebankv2;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebChromeClient;
 import android.widget.ImageView;
 
+import java.io.BufferedReader;
+
 public class createuser extends Activity {
     ImageView image_back; // 로그인 페이지 이동
+    String serverip = "";
+    String serverport = "";
+    String protocol = "http://";
+    SharedPreferences serverDetails;
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -23,9 +31,14 @@ public class createuser extends Activity {
             }
         });
 
+        serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
+        serverip = serverDetails.getString("serverip", "3.20.202.177");
+        serverport = serverDetails.getString("serverport", "8888");
+
         //웹 뷰 시작
         WebView mWebView = (WebView) findViewById(R.id.wv_createuser);
-        mWebView.loadUrl("http://3.20.202.177:8888/signup");
+        String url = protocol + serverip + ":" + serverport + "/signup";
+        mWebView.loadUrl(url);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setSaveFormData(true);
         mWebView.getSettings().setBuiltInZoomControls(true);
