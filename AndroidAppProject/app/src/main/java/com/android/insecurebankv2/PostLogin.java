@@ -2,10 +2,15 @@ package com.android.insecurebankv2;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,17 +18,38 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 
 /*
@@ -34,25 +60,25 @@ Change Password:  Module that allows the logged in user to change the password
 @author Dinesh Shetty
 */
 public class PostLogin extends Activity {
+	JSONObject jsonObject;
+
 	ImageView image_back;
-	//	The Button that handles the transfer activity
 	ImageView image_lock;
-	Button transfer_button;
 	Button add_count;
-
-	TextView price;
-	TextView account_number;
-
 	TextView name;
-
-	//  The Textview that handles the root status display
-//	TextView root_status;
-	//	The Button that handles the view transaction history activity
-	//Button statement_button;
-
-	//	The Button that handles the change password activity
-	//Button changepasswd_button;
 	String uname;
+
+	LinearLayout linearLayout;
+	LinearLayout.LayoutParams linearParams;
+
+	String result;
+	BufferedReader reader;
+	HttpResponse responseBody;
+	InputStream in;
+	String serverip = "";
+	String serverport = "";
+	SharedPreferences serverDetails;
+	String protocol = "http://";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,33 +86,22 @@ public class PostLogin extends Activity {
 		setContentView(R.layout.activity_new_main);
 		Intent intent = getIntent();
 		uname = intent.getStringExtra("uname");
-
-
 		name = (TextView) findViewById(R.id.name);
 		name.setText(uname);
 
-
-
-//        root_status =(TextView) findViewById(R.id.rootStatus);
-//        //  Display root status
-//        showRootStatus();
-//        //	Display emulator status
-//        checkEmulatorStatus();
-
-
+		serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
+		serverip = serverDetails.getString("serverip", "3.20.202.177");
+		serverport = serverDetails.getString("serverport", "8888");
 
 		// 뒤로가기
 		image_back = (ImageView) findViewById(R.id.new_main_back);
 		image_back.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				Intent mL = new Intent(getApplicationContext(),LoginActivity.class);
 				startActivity(mL);
-
 			}
 		});
-
 
 		// 비밀번호 설정
 		image_lock = (ImageView) findViewById(R.id.new_main_lock);
@@ -94,193 +109,38 @@ public class PostLogin extends Activity {
 			@Override
 			public void onClick(View v) {
 				testchangepw();
-//				Intent cp = new Intent(getApplicationContext(), ChangePassword2.class);
-//				startActivity(cp);
 			}
 		});
 
+		linearLayout = (LinearLayout) findViewById(R.id.linearlayout);
+		linearLayout.setGravity(Gravity.TOP);
+		linearParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		linearParams.gravity = Gravity.CENTER;
 
-		// 전송(계좌내역조회) 페이지로 이동
-		transfer_button = (Button) findViewById(R.id.trf_button);
-		transfer_button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				testaccount();
-
-//				Intent data = new Intent();
-//
-//				data.setData(Uri.parse(price.getText().toString()));
-//				setResult(RESULT_OK, data);
-
-//				Intent T = new Intent(getApplicationContext(), test.class);
-//				startActivity(T);
-			}
-		});
-
-		//ListView 생성하여 계좌 추가
-		final ArrayList<String> items = new ArrayList<>();
-
-
-		//count가 필요한 리스트뷰 레이아웃
-		//final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, items);
-		final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, items);//item_2는 또 안됨 item_2는 두 개의 데이터 저장하니까 HashMap 써야하네
-		//final ArrayAdapter adapter = new ArrayAdapter(this, R.layout.accounts_item, items);내가 만든 건데 안됨
-
-		final ListView listView = (ListView) findViewById(R.id.listview);
-		listView.setAdapter(adapter);
-
-
-
+		new PostLogin.RequestAccountlistTask().execute("username");
 
 		add_count = (Button) findViewById(R.id.add_account);
 		add_count.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*int count;
-				count = adapter.getCount();//count가 있는 게 갖고 온 layout이 simple_list_item_single_choice이기 때문!!!*/
-
-				//items.add("가나다의 계좌" + Integer.toString(count + 1));
-				items.add((int)((Math.random()*9999)+1) + "-" + (int)(Math.random()*9)+1 + "-" + (int)(Math.random()*9999999)+1);//계좌번호
-
-				adapter.notifyDataSetChanged();
-
-
-
+				new PostLogin.RequestAccountaddTask().execute("username");
 			}
 		});
+	}
 
-
-
-
-//		transfer_button.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				/*
-//				The class that allows allows transfer of amount between two accounts
-//				*/
-//				Intent dT = new Intent(getApplicationContext(), DoTransfer.class);
-//				startActivity(dT);
-//
-//		});
-
-
-//		statement_button = (Button) findViewById(R.id.viewStatement_button);
-//		statement_button.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				viewStatment();
-//			}
-//		});
-//		changepasswd_button = (Button) findViewById(R.id.button_ChangePasswd);
-//		changepasswd_button.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				changePasswd();
-//			}
-//		});
-//	}
-//
-//	private void checkEmulatorStatus() {
-//		Boolean isEmulator = checkIfDeviceIsEmulator();
-//		if(isEmulator==true)
-//		{
-//			Toasteroid.show(this, "Application running on Emulator", Toasteroid.STYLES.ERROR, Toasteroid.LENGTH_LONG);
-//		}
-//		else
-//		{
-//			Toasteroid.show(this, "Application running on Real device", Toasteroid.STYLES.SUCCESS, Toasteroid.LENGTH_LONG);
-//		}
-//	}
-//
-//	private Boolean checkIfDeviceIsEmulator() {
-//		if(Build.FINGERPRINT.startsWith("generic")
-//				|| Build.FINGERPRINT.startsWith("unknown")
-//				|| Build.MODEL.contains("google_sdk")
-//				|| Build.MODEL.contains("Emulator")
-//				|| Build.MODEL.contains("Android SDK built for x86")
-//				|| Build.MANUFACTURER.contains("Genymotion")
-//				|| (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-//				|| "google_sdk".equals(Build.PRODUCT))
-//		{
-//			return true;
-//		}
-//		return false;
-//	}
-//
-//
-//	void showRootStatus() {
-//        boolean isrooted = doesSuperuserApkExist("/system/app/Superuser.apk")||
-//                doesSUexist();
-//        if(isrooted==true)
-//        {
-//            root_status.setText("Rooted Device!!");
-//        }
-//        else
-//        {
-//            root_status.setText("Device not Rooted!!");
-//        }
-//    }
-//
-//    private boolean doesSUexist() {
-//        Process process = null;
-//        try {
-//            process = Runtime.getRuntime().exec(new String[] { "/system/bin/which", "su" });
-//            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-//            if (in.readLine() != null) return true;
-//            return false;
-//        } catch (Throwable t) {
-//            return false;
-//        } finally {
-//            if (process != null) process.destroy();
-//        }
-//
-//    }
-//
-//    private boolean doesSuperuserApkExist(String s) {
-//
-//        File rootFile = new File("/system/app/Superuser.apk");
-//        Boolean doesexist = rootFile.exists();
-//        if(doesexist == true)
-//        {
-//            return(true);
-//        }
-//        else
-//        {
-//            return(false);
-//        }
-//    }
-
-    /*
-    The page that allows the user to allow password change for the logged in user
-    */
-//	protected void changePasswd() {
-//		// TODO Auto-generated method stub
-//		Intent cP = new Intent(getApplicationContext(), ChangePassword2.class);
-//		cP.putExtra("uname", uname);
-//		startActivity(cP);
-//	}
-
-	/*
-	The function that allows the user to view transaction history for the logged in user
-	*/
-//	protected void viewStatment() {
-//		// TODO Auto-generated method stub
-//		Intent vS = new Intent(getApplicationContext(), ViewStatement.class);
-//		vS.putExtra("uname", uname);
-//		startActivity(vS);
-//	}
-
-//	public void callPreferences() {
-//		// TODO Auto-generated method stub
-//		Intent i = new Intent(this, FilePrefActivity.class);
-//		startActivity(i);
-//	}
+	private void make_button(final String account, final String balance){
+		Button buttons = new Button(this);
+		buttons.setLayoutParams(linearParams);
+		buttons.setBackgroundResource(R.drawable.border_button_account);
+		String str= account + "\n" + balance;
+		buttons.setText(str);
+		buttons.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				move_dotransfer(account, balance);
+			}
+		});
+		linearLayout.addView(buttons);
 	}
 
 	//비밀번호 변경 페이지로 이동, 사용자 id 전달
@@ -291,17 +151,207 @@ public class PostLogin extends Activity {
 	}
 
 	// 전송(계좌내역조회) 페이지로 금액, 계좌 값 전달
-	private void testaccount() {
-		price = (TextView) findViewById(R.id.price);
-		account_number = (TextView) findViewById(R.id.account_number);
-
+	private void move_dotransfer(String account, String balance) {
 		Intent a = new Intent(this, test.class);
-
-		a.putExtra("balance", price.getText().toString());
-		a.putExtra("account", account_number.getText().toString());
+		a.putExtra("balance", balance);
+		a.putExtra("account", account);
 		startActivity(a);
+	}
 
+	public class RequestAccountlistTask extends AsyncTask<String, String, String> {
+
+		/**
+		 * constructor
+		 *
+		 * @return
+		 */
+		public void AsyncHttpTransferPost(String string) {
+			//do something
+		}
+
+		/**
+		 * background functions
+		 */
+		@Override
+		protected String doInBackground(String... params) {
+			String str = "";
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost(protocol + serverip + ":" + serverport + "/accountlist");
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+			nameValuePairs.add(new BasicNameValuePair("username", uname));
+			try {
+				//	The HTTP Post of the credentials plus the transaction information
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				//	Stores the HTTP response of the transaction activity
+				responseBody = httpclient.execute(httppost);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			try {
+				in = responseBody.getEntity().getContent();
+			} catch (IllegalStateException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				result = convertStreamToString(in);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			result = result.replace("\n", "");
+			if (result != null) {
+				if (result.indexOf("Success") != -1) {
+					runOnUiThread(new Runnable(){
+						@Override
+						public void run(){
+							try {
+								jsonObject = new JSONObject(result);
+								Log.d("-------------------", jsonObject.getString("account"));
+								Log.d("-------------------", jsonObject.getJSONArray("account").getJSONObject(0).toString());
+								Log.d(">>>>>>>>>>",Integer.toString(jsonObject.getJSONArray("account").length()));
+								int i;
+								for(i=0; i<jsonObject.getJSONArray("account").length();i++){
+									make_button(jsonObject.getJSONArray("account").getJSONObject(i).getString("number"),
+											jsonObject.getJSONArray("account").getJSONObject(i).getString("balance"));
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					});
+					Log.d("Result : ", "transfer Done");
+				}
+				else{
+					runOnUiThread(new Runnable(){
+						@Override
+						public void run(){
+							Toast.makeText(getApplicationContext(), "계좌 목록을 불러오지 못했습니다.", Toast.LENGTH_LONG).show();
+						}
+					});
+					Log.d("Result : ", "transfer Fail");
+				}
+			}
+			return str;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+		}
+
+		protected void onProgressUpdate(String... progress) {
+		}
 
 	}
 
+	public class RequestAccountaddTask extends AsyncTask<String, String, String> {
+
+		/**
+		 * constructor
+		 *
+		 * @return
+		 */
+		public void AsyncHttpTransferPost(String string) {
+			//do something
+		}
+
+		/**
+		 * background functions
+		 */
+		@Override
+		protected String doInBackground(String... params) {
+			String str = "";
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost(protocol + serverip + ":" + serverport + "/accountadd");
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+			nameValuePairs.add(new BasicNameValuePair("username", uname));
+			try {
+				//	The HTTP Post of the credentials plus the transaction information
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				//	Stores the HTTP response of the transaction activity
+				responseBody = httpclient.execute(httppost);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			try {
+				in = responseBody.getEntity().getContent();
+			} catch (IllegalStateException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				result = convertStreamToString(in);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			result = result.replace("\n", "");
+			if (result != null) {
+				if (result.indexOf("Success") != -1) {
+					runOnUiThread(new Runnable(){
+						@Override
+						public void run(){
+							try {
+								jsonObject = new JSONObject(result);
+								Log.d("---------->>>",jsonObject.getString("account"));
+								Log.d("---------->>>",jsonObject.getString("balance"));
+								make_button(jsonObject.getString("account"),jsonObject.getString("balance"));
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					});
+					Log.d("Result : ", "transfer Done");
+				}
+				else{
+					runOnUiThread(new Runnable(){
+						@Override
+						public void run(){
+							Toast.makeText(getApplicationContext(), "계좌 목록을 불러오지 못했습니다.", Toast.LENGTH_LONG).show();
+						}
+					});
+					Log.d("Result : ", "transfer Fail");
+				}
+			}
+			return str;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+		}
+
+		protected void onProgressUpdate(String... progress) {
+		}
+
+	}
+	public String convertStreamToString(InputStream in) throws IOException {
+		// TODO Auto-generated method stub
+		try {
+			reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line + "\n");
+		}
+		in.close();
+		return sb.toString();
+	}
 }

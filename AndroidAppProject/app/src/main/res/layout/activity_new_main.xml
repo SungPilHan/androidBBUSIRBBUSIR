@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_width="match_parent"
     android:background="#FFFFFF">
 
     <ImageView
@@ -50,40 +50,32 @@
         android:textStyle="bold" />
 
 
-    <Button
-        android:id="@+id/trf_button"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="211dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginBottom="320dp"
-        android:background="@drawable/border_button_account" />
+    <ScrollView
+        android:layout_width="369dp"
+        android:layout_height="505dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="16dp">
 
-    <TextView
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="270dp"
-        android:layout_marginEnd="186dp"
-        android:layout_marginBottom="434dp"
-        android:text="1,004 원"
-        android:textColor="#000000"
-        android:textSize="20sp" />
+        <LinearLayout
+            android:id="@+id/linearlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/account_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="313dp"
-        android:layout_marginEnd="168dp"
-        android:layout_marginBottom="391dp"
-        android:text="111111"
-        android:textSize="20sp" />
+            <Button
+                android:id="@+id/add_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_button"
+                android:text="+"
+                android:textColor="#424141"
+                android:textSize="30sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+    </ScrollView>
+
 
     <!--        <Button-->
     <!--            android:id="@+id/add_account"-->
@@ -111,40 +103,5 @@
             android:paddingStart="100dp" />
 
     </LinearLayout>-->
-
-    <ScrollView
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="430dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ListView
-                android:id="@+id/listview"
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/border_button_account"
-                android:choiceMode="singleChoice"
-                android:dividerHeight="1.5dp" />
-
-            <Button
-                android:id="@+id/add_account"
-                android:layout_width="350dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/border_button"
-                android:text="+"
-                android:textColor="#424141"
-                android:textSize="30sp"
-                android:textStyle="normal" />
-
-        </LinearLayout>
-
-    </ScrollView>
 
 </RelativeLayout>
