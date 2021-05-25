@@ -1,4 +1,4 @@
-package com.android.insecurebankv2;
+package com.android.BBUSIRBBUSIR;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -9,8 +9,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebChromeClient;
 import android.widget.ImageView;
-
-import java.io.BufferedReader;
 
 public class createuser extends Activity {
     ImageView image_back; // 로그인 페이지 이동

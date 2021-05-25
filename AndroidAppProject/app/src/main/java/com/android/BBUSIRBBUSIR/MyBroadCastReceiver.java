@@ -1,4 +1,4 @@
-package com.android.insecurebankv2;
+package com.android.BBUSIRBBUSIR;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

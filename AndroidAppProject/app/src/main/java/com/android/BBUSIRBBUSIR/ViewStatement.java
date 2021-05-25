@@ -1,14 +1,11 @@
-package com.android.insecurebankv2;
+package com.android.BBUSIRBBUSIR;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import com.marcohc.toasteroid.Toasteroid;
 

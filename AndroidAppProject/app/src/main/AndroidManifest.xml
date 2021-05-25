@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.android.insecurebankv2">
+    package="com.android.BBUSIRBBUSIR">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -30,7 +30,7 @@
         <!--
         android:theme="@style/AppTheme"-->
         <activity
-            android:name=".LoginActivity"
+            android:name="com.android.BBUSIRBBUSIR.LoginActivity"
             android:label="@string/app_name" >
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
-        <activity android:name=".SplashActivity" android:theme="@style/SplashTheme" android:screenOrientation="portrait">
+        <activity android:name="com.android.BBUSIRBBUSIR.SplashActivity" android:theme="@style/SplashTheme" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,54 +46,54 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FilePrefActivity"
+            android:name="com.android.BBUSIRBBUSIR.FilePrefActivity"
             android:label="@string/title_activity_file_pref"
             android:windowSoftInputMode="stateVisible|adjustResize|adjustPan">
         </activity>
         <activity
-            android:name=".DoLogin"
+            android:name="com.android.BBUSIRBBUSIR.DoLogin"
             android:label="@string/title_activity_do_login" >
         </activity>
         <activity
-            android:name=".PostLogin"
+            android:name="com.android.BBUSIRBBUSIR.PostLogin"
             android:exported="true"
             android:label="@string/title_activity_post_login" >
         </activity>
         <activity
-            android:name=".WrongLogin"
+            android:name="com.android.BBUSIRBBUSIR.WrongLogin"
             android:label="@string/title_activity_wrong_login" >
         </activity>
         <activity
-            android:name=".DoTransfer"
+            android:name="com.android.BBUSIRBBUSIR.DoTransfer"
             android:exported="true"
             android:label="@string/title_activity_do_transfer" >
         </activity>
         <activity
-            android:name=".ViewStatement"
+            android:name="com.android.BBUSIRBBUSIR.ViewStatement"
             android:exported="true"
             android:label="@string/title_activity_view_statement" >
         </activity>
 
         <activity
-            android:name=".ChangePassword2"
+            android:name="com.android.BBUSIRBBUSIR.ChangePassword2"
             android:label="ChangePassword2">
         </activity>
 
-        <activity android:name=".test"
+        <activity android:name="com.android.BBUSIRBBUSIR.test"
             android:label="test">
 
         </activity>
 
-        <activity android:name=".createuser" />
+        <activity android:name="com.android.BBUSIRBBUSIR.createuser" />
 
         <provider
-            android:name=".TrackUserContentProvider"
-            android:authorities="com.android.insecurebankv2.TrackUserContentProvider"
+            android:name="com.android.BBUSIRBBUSIR.TrackUserContentProvider"
+            android:authorities="com.android.BBUSIRBBUSIR.TrackUserContentProvider"
             android:exported="true" >
         </provider>
 
         <receiver
-            android:name=".MyBroadCastReceiver"
+            android:name="com.android.BBUSIRBBUSIR.MyBroadCastReceiver"
             android:exported="true" >
             <intent-filter>
                 <action android:name="theBroadcast" >

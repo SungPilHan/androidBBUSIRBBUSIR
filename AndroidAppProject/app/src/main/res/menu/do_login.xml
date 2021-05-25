@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.android.insecurebankv2.DoLogin" >
+    tools:context="com.android.BBUSIRBBUSIR.DoLogin" >
 
     <item
         android:id="@+id/action_settings"
