@@ -210,13 +210,23 @@ def searchtransferhistory():
 		if i.from_acc==account:
 			balance += amount
 			js = {"display_acc" : i.to_acc, "amount" : -(i.amount), "balance" : balance}
+			amount = -(i.amount)
 		else:
 			balance -= amount
 			js = {"display_acc" : i.from_acc, "amount" : i.amount, "balance" : balance}
-		amount = i.amount
+			amount = i.amount
 		historylist.append(js)
 	print(historylist)
 	return render_template('searchtransferhistory.html', historylist=historylist)
+
+@app.route('/getbalance', methods=['GET','POST'])
+def getbalance():
+	account=int(request.form['account'])
+	balance = Account.query.filter(Account.accountNo==account).first().balance
+	data = {"message" : "success", "balance" : balance}
+	print(makejson(data))
+	return makejson(data)
+
 
 '''
 The function provides login mechanism to a developer user during development phase
