@@ -27,13 +27,13 @@ public class SplashActivity extends Activity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            moveTaskToBack(true);
             android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
 
     void showRootStatus() {
-        isrooted = doesSuperuserApkExist("/system/app/Superuser.apk") ||
-                doesSUexist();
+        isrooted = doesSuperuserApkExist("/system/app/Superuser.apk") || doesSUexist();
         if (isrooted == true) {
             Toast.makeText(getApplicationContext(), "루팅된 기기 입니다.", Toast.LENGTH_LONG).show();
             try {
