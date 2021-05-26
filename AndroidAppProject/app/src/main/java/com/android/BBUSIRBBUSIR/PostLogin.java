@@ -137,7 +137,10 @@ public class PostLogin extends Activity {
 		Intent a = new Intent(this, test.class);
 		a.putExtra("balance", balance);
 		a.putExtra("account", account);
+		a.putExtra("username", uname);
+		Log.d("------------ uname : ", uname);
 		startActivity(a);
+		finish();
 	}
 
 	public class RequestAccountlistTask extends AsyncTask<String, String, String> {
