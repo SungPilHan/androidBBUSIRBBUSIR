@@ -213,10 +213,4 @@ public class DoLogin extends Activity {
 			return sb.toString();
 		}
 	}
-
-	public void callPreferences() {
-		// TODO Auto-generated method stub
-		Intent i = new Intent(this, FilePrefActivity.class);
-		startActivity(i);
-	}
 }
