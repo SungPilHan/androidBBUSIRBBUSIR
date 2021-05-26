@@ -53,7 +53,6 @@ public class DoTransfer extends Activity {
 
     TextView editText_from;
     String from;
-    String balance;
 
     BufferedReader reader;
     //	The EditText that holds the to account number
@@ -86,7 +85,6 @@ public class DoTransfer extends Activity {
         //송금 페이지로 이동할 때 보내는 계좌 TextView에 사용자 계좌번호 전달
         Intent intent = getIntent();
         from = intent.getStringExtra("account");
-        balance = intent.getStringExtra("balance");
 
         editText_from = (TextView) findViewById(R.id.editText_from);
         editText_from.setText(from);
@@ -102,16 +100,11 @@ public class DoTransfer extends Activity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+                to = (EditText) findViewById(R.id.editText_to);
+                amount = (EditText) findViewById(R.id.editText_amount);
                 new RequestDoTransferTask().execute("username");
             }
         });
-    }
-
-    public void gototest(){
-        Intent a = new Intent(this, test.class);
-        a.putExtra("balance", balance);
-        a.putExtra("account", from);
-        startActivity(a);
     }
 
     public class RequestDoTransferTask extends AsyncTask<String, String, String> {
@@ -154,8 +147,6 @@ public class DoTransfer extends Activity {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
             nameValuePairs.add(new BasicNameValuePair("username", usernameBase64ByteString));
             nameValuePairs.add(new BasicNameValuePair("password", passNormalized));
-            to = (EditText) findViewById(R.id.editText_to);
-            amount = (EditText) findViewById(R.id.editText_amount);
             nameValuePairs.add(new BasicNameValuePair("from_acc", from));
             nameValuePairs.add(new BasicNameValuePair("to_acc", to.getText().toString()));
             nameValuePairs.add(new BasicNameValuePair("amount", amount.getText().toString()));
