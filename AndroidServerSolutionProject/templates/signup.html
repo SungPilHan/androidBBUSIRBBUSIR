@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="{{url_for('static', filename='cu_style.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+      var check=false;
+      function idcheck_click(){
+        var username = document.getElementById("username").value;
+        if(username.length==0){
+          alert("ID를 입력해주세요!");
+        }
+        else{
+          $.ajax({
+            cache: false,
+            url: "http://{{ip}}:8888/idcheck",
+            type: "post",
+            data: "username="+username,
+            success: function(data){
+              var jsonData = JSON.parse(data);
+              if(jsonData["message"]=="User Exist"){
+                alert("이미 사용중인 ID 입니다.");
+              }
+              else{
+                alert("사용 가능한 ID 입니다.");
+                check=true;
+              }
+            },
+            error: function(xhr, status){
+              alert(xhr + ":" + status);
+            }
+          });
+        }
+      }
+      function join_click(){
+        var username=document.getElementById("username").value;
+        var password=document.getElementById("password").value;
+        var pwcheck=document.getElementById("pwcheck").value;
+        if(check==false){
+          alert("ID 중복 확인을 해주세요!");
+        }
+        else if(username == 0){
+          alert("ID를 입력해주세요!");
+        }
+        else if(password == 0){
+          alert("비밀번호를 입력해주세요!");
+        }
+        else if(pwcheck == 0){
+          alert("비밀번호 확인을 입력해주세요!");
+        }
+        else{
+          if(password != pwcheck){
+            alert("비밀번호가 서로 다릅니다!");
+          }
+          else{
+            $.ajax({
+            cache: false,
+            url: "http://{{ip}}:8888/join",
+            type: "post",
+            data: "username="+username+"&password="+password,
+            success: function(data){
+              var jsonData = JSON.parse(data);
+              if(jsonData["message"]=="Done"){
+                alert("회원가입이 완료되었습니다.");
+                window.android.setMessage("hahahaha");
+              }
+              else{
+                alert("회원가입에 실패하였습니다.");
+              }
+            },
+            error: function(xhr, status){
+              alert(xhr + ":" + status);
+            }
+          });
+          }
+        }
+      }
+    </script>
+  </head>
+  <body>
+      <section class="login-wrap">
+        <br>
+        <span class="login-id-wrap">
+          <input id="username" name="username" placeholder="  아이디를 입력해주세요" type="text" class="input-id" >
+        </span>
+        <span class="login-id-check"  >
+          <button class="double-check" id="double-check" style="color: #FFD044;" onclick="idcheck_click();"> 중복 확인</button>
+        </span>
+        <br>
+        <br>
+        <div class="login-pw-wrap">
+          <input placeholder="  비밀번호를 입력해주세요" type="password" class="input=pw" id="password" style="border-radius: 15px; width: 350px; height: 55px; font-size: larger; border-color: dimgrey; border:1px solid">
+        </div>
+        <div class="login-pw-wrap2">
+          <input placeholder="  비밀번호를 한번 더 입력해주세요" type="password" class="input-pw2" id="pwcheck" style="border-radius: 15px; width: 350px; height: 55px; font-size: larger; border-color: dimgrey; border:1px solid">
+        </div>
+        <div class="login-btn-wrap">
+          <button class = "login-btn" id="login-btn" onclick="join_click();"> 가입하기 </button>
+        </div>
+      </section>
+  </body>
+</html>
