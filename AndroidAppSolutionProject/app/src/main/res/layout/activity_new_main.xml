@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="#FFFFFF">
+
+    <ImageView
+        android:id="@+id/new_main_back"
+        android:layout_width="48dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="358dp"
+        android:layout_marginBottom="670dp"
+        android:rotation="180"
+        android:src="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/new_main_lock"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="385dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="666dp"
+        android:src="@drawable/locker2" />
+
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="106dp"
+        android:layout_marginEnd="304dp"
+        android:layout_marginBottom="545dp"
+        android:src="@drawable/mongle" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="109dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="246dp"
+        android:layout_marginBottom="575dp"
+        android:text="가나다"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+    <ScrollView
+        android:layout_width="369dp"
+        android:layout_height="505dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:id="@+id/linearlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/add_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_button"
+                android:text="+"
+                android:textColor="#424141"
+                android:textSize="30sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+    </ScrollView>
+
+
+    <!--        <Button-->
+    <!--            android:id="@+id/add_account"-->
+    <!--            android:layout_width="350dp"-->
+    <!--            android:layout_height="60dp"-->
+    <!--            android:layout_centerHorizontal="true"-->
+    <!--            android:layout_marginTop="450dp"-->
+    <!--            android:layout_marginStart="35dp"-->
+    <!--            android:background="@drawable/border_button"-->
+    <!--            android:text="+"-->
+    <!--            android:textColor="#424141"-->
+    <!--            android:textSize="30sp"-->
+    <!--            android:textStyle="normal" />-->
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="211dp">
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:divider="#00000000"
+            android:paddingStart="100dp" />
+
+    </LinearLayout>-->
+
+</RelativeLayout>

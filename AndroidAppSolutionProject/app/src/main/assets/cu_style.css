@@ -1,0 +1,119 @@
+body{
+    background-color:#fff;
+}
+
+
+/*input 사용자 이름박스*/
+.user-name-wrap{
+
+    margin: 0px 0px 8px 10px;
+    padding: 10px;
+    background: #fff;
+
+}
+/*input 사용자 이름 form*/
+.user-name{
+    width: 350px;
+    height: 55px;
+    border-radius: 15px;
+    border-color: dimgrey;
+    border : 1px solid;
+    font-size: larger;
+
+}
+
+/*input 아이디박스*/
+.login-id-wrap{
+
+    margin: 0px 0px 8px 10px;
+    padding: 10px;
+    background: #fff;
+
+}
+/*input 아이디 form*/
+.input-id{
+    width: 235px;
+    height: 55px;
+    border-radius: 15px;
+    border-color: dimgrey;
+    border : 1px solid;
+    font-size: larger;
+}
+
+
+/*중복확인 버튼 박스*/
+.login-id-check{
+    cursor: pointer;
+}
+
+/*중복확인 버튼*/
+.double-check{
+    width: 100px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 15px;
+    border: 2px solid;
+    border-color: #FFD400;
+    font-size: large;
+    cursor: pointer;
+    font-weight: bold;
+
+}
+
+/*input 패스워드박스*/
+.login-pw-wrap{
+
+    margin: 0px 10px 8px 10px;
+    padding: 10px;
+    background: #fff;
+}
+
+
+/*input 패스워드 form*/
+.input-pw{
+    width: 230px;
+    height: 35px;
+    border-radius: 9px;
+    border-color: dimgrey;
+    border: 1px solid;
+
+
+}
+
+/*input 패스워드 확인박스*/
+.login-pw-wrap2{
+
+    margin: 0px 10px 8px 10px;
+    padding: 10px;
+    background: #fff;
+}
+
+/*input 패스워드2 form*/
+.input-pw{
+    border: none;
+    outline:none;
+    width:100%;
+}
+
+/*회원가입 버튼박스*/
+.login-btn-wrap{
+    height: 52px;
+    line-height: 55px;
+    margin: 0px 10px 8px 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+/*회원가입 버튼*/
+.login-btn{
+    width:360px;
+    height: 65px;
+    background-color: #FFD400;
+    border: none;
+    font-size: larger;
+    font-weight: bold;
+    outline:none;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+

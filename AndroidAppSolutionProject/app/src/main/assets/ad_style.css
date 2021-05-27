@@ -1,0 +1,66 @@
+body{
+    background-color:#fff;
+}
+
+
+/*input 아이디박스*/
+.admin-id-wrap{
+
+    margin: 0px 10px 8px 10px;
+    padding: 10px;
+    background: #fff;
+
+}
+/*input 아이디 form*/
+.input-id{
+    width: 270px;
+    height: 35px;
+    border-radius: 9px;
+    border-color: dimgrey;
+    border : 1px solid;
+}
+
+
+
+/*input 패스워드박스*/
+.admin-pw-wrap{
+
+    margin: 0px 10px 8px 10px;
+    padding: 10px;
+    background: #fff;
+}
+
+/*input 패스워드 form*/
+/* .input-pw{
+    width: 230px;
+    height: 35px;
+    border-radius: 9px;
+    border-color: dimgrey;
+    border: 1px solid;
+
+
+} */
+
+/*회원가입 버튼박스*/
+.admin-btn-wrap{
+    height: 52px;
+    line-height: 55px;
+    margin: 0px 10px 8px 10px;
+    padding: 10px;
+    color: #fff;
+    cursor: pointer;
+}
+/*회원가입 버튼*/
+.admin-btn{
+    width:280px;
+    height: 50px;
+    background-color: #FFD400;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    outline:none;
+    cursor: pointer;
+    border-radius: 9px;
+}
+
+
