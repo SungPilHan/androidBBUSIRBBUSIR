@@ -163,11 +163,12 @@ def dotransfer():
 			if memo:
 				db_session.add(History(int(from_acc), int(to_acc), int(amount), memo))
 			else:
-				db_session.add(History(int(from_acc), int(to_acc), int(amount), ' '))
+				db_session.add(History(int(from_acc), int(to_acc), int(amount), ''))
 			db_session.commit()
 			data = {"message" : Responsemsg, "from": from_acc, "to": to_acc,  "amount": amount}
-		except:
+		except Exception as e:
 			data = {"message" : "Error"}
+			print("Error : ", e)
 	print(makejson(data))
 	return makejson(data)
 
@@ -213,11 +214,11 @@ def searchtransferhistory():
 	for i in u:
 		if i.from_acc==account:
 			balance += amount
-			js = {"display_acc" : i.to_acc, "amount" : -(i.amount), "balance" : balance}
+			js = {"display_acc" : i.to_acc, "amount" : -(i.amount), "balance" : balance, "memo" : i.memo.strip()}
 			amount = -(i.amount)
 		else:
 			balance -= amount
-			js = {"display_acc" : i.from_acc, "amount" : i.amount, "balance" : balance}
+			js = {"display_acc" : i.to_acc, "amount" : i.amount, "balance" : balance, "memo" : i.memo.strip()}
 			amount = i.amount
 		historylist.append(js)
 	print(historylist)

@@ -12,13 +12,15 @@
     <table style="width: 350px; font-size: larger; border:1px solid">
         {% for history in historylist %}
             <tr>
-                <td style="text-align: left; vertical-align: top; width: 250px">
-                    <b>{{ history.display_acc }}</b>
-                </td>
-                <td style="text-align: right; border-left: none;">
-                    {{ history.amount }}
+                <td style="text-align: left; vertical-align: top; width: 200px">
+                    <b>312258-16-{{ history.display_acc }}</b>
                     <br>
-                    {{ history.balance }}
+                    {{ history.memo|safe }}
+                </td>
+                <td style="text-align: right; border-left: none; font-size: 2vm;">
+                    {{ history.amount }}원
+                    <br>
+                    잔액: {{ history.balance }}원
                 </td>
             </tr>
         {% endfor %}

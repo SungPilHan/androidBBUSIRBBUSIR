@@ -115,7 +115,7 @@ public class ViewStatmentActivity extends Activity {
         account_number2 = findViewById(R.id.account_number2);
         number2 = intent.getStringExtra("account");
         account_number2.setTextSize(20);
-        account_number2.setText(number2);
+        account_number2.setText("312258-16-"+number2);
 
         price2 = findViewById(R.id.price2);
         new RequestbalanceTask().execute("account");
@@ -141,7 +141,7 @@ public class ViewStatmentActivity extends Activity {
     //송금 페이지로 이동, 사용자 계좌번호 전달
     private void trans_account() {
         Intent b = new Intent(this, DoTransferActivity.class);
-        b.putExtra("account", account_number2.getText().toString());
+        b.putExtra("account", number2);
         startActivity(b);
     }
 
