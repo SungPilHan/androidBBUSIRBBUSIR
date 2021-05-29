@@ -4,6 +4,7 @@ import base64
 #from datetime import datetime
 from sqlalchemy import Column, Integer, String
 from requests import get
+from sqlalchemy.sql.expression import text
 ip = get("https://api.ipify.org").text
 if(ip=="3.20.202.177"):
     from database_mysql import db_session, Base
@@ -54,11 +55,13 @@ class History(Base):
     from_acc = Column(Integer)
     to_acc = Column(Integer)
     amount = Column(Integer)
+    memo = Column(String(50))
 
-    def __init__(self, from_acc=None, to_acc=None, amount=None):
+    def __init__(self, from_acc=None, to_acc=None, amount=None, memo=" "):
         self.from_acc = from_acc
         self.to_acc = to_acc
         self.amount = amount
+        self.memo = memo
 
     def __repr__(self):
         return '<History %r>' % (self.from_acc)  
@@ -67,5 +70,6 @@ class History(Base):
     def values(self):
         return {"from_acc" : self.from_acc,
                 "to_acc" : self.to_acc,
-                "amount" : self.amount
+                "amount" : self.amount,
+                "memo" : self.memo
                 }

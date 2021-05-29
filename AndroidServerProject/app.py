@@ -154,12 +154,16 @@ def dotransfer():
 		from_acc = request.form["from_acc"]
 		to_acc = request.form["to_acc"]
 		amount = request.form["amount"]
+		memo = request.form["memo"]
 		from_account = Account.query.filter(Account.accountNo == from_acc).first()
 		to_account = Account.query.filter(Account.accountNo == to_acc).first()
 		try:
 			to_account.balance += int(amount)
 			from_account.balance -= int(amount)
-			db_session.add(History(int(from_acc), int(to_acc), int(amount)))
+			if memo:
+				db_session.add(History(int(from_acc), int(to_acc), int(amount), memo))
+			else:
+				db_session.add(History(int(from_acc), int(to_acc), int(amount), ' '))
 			db_session.commit()
 			data = {"message" : Responsemsg, "from": from_acc, "to": to_acc,  "amount": amount}
 		except:
