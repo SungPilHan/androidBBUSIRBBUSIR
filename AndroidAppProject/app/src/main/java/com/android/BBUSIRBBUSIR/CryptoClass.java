@@ -41,15 +41,7 @@ public class CryptoClass {
 	keyBytes: Key used as input by the encryption function
 	textBytes: Plaintext input to the encryption function
 	*/
-	public static byte[] aes256encrypt(byte[] ivBytes, byte[] keyBytes, byte[] textBytes)
-	throws UnsupportedEncodingException,
-	NoSuchAlgorithmException,
-	NoSuchPaddingException,
-	InvalidKeyException,
-	InvalidAlgorithmParameterException,
-	IllegalBlockSizeException,
-	BadPaddingException {
-
+	public static byte[] aes256encrypt(byte[] ivBytes, byte[] keyBytes, byte[] textBytes) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		AlgorithmParameterSpec ivSpec = new IvParameterSpec(ivBytes);
 		SecretKeySpec newKey = new SecretKeySpec(keyBytes, "AES");
 		Cipher cipher = null;
@@ -64,21 +56,12 @@ public class CryptoClass {
 	keyBytes: Key used as input by the decryption function
 	textBytes: Ciphertext input to the decryption function
 	*/
-	public static byte[] aes256decrypt(byte[] ivBytes, byte[] keyBytes, byte[] textBytes)
-	throws UnsupportedEncodingException,
-	NoSuchAlgorithmException,
-	NoSuchPaddingException,
-	InvalidKeyException,
-	InvalidAlgorithmParameterException,
-	IllegalBlockSizeException,
-	BadPaddingException {
-
+	public static byte[] aes256decrypt(byte[] ivBytes, byte[] keyBytes, byte[] textBytes) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		AlgorithmParameterSpec ivSpec = new IvParameterSpec(ivBytes);
 		SecretKeySpec newKey = new SecretKeySpec(keyBytes, "AES");
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.DECRYPT_MODE, newKey, ivSpec);
 		return cipher.doFinal(textBytes);
-		
 	}
 
 	/*
