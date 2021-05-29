@@ -10,7 +10,7 @@ import android.webkit.WebView;
 import android.webkit.WebChromeClient;
 import android.widget.ImageView;
 
-public class createuser extends Activity {
+public class SignupActivity extends Activity {
     ImageView image_back; // 로그인 페이지 이동
     String serverip = "";
     String serverport = "";
@@ -21,7 +21,7 @@ public class createuser extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createuser);
         // 회원가입 창에서 로그인 창으로 넘어가는 부분
-        image_back = (ImageView) findViewById(R.id.createuser_back);
+        image_back = findViewById(R.id.createuser_back);
         image_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,7 +34,7 @@ public class createuser extends Activity {
         serverport = serverDetails.getString("serverport", "8888");
 
         //웹 뷰 시작
-        WebView mWebView = (WebView) findViewById(R.id.wv_createuser);
+        WebView mWebView = findViewById(R.id.wv_createuser);
         String url = protocol + serverip + ":" + serverport + "/signup";
         mWebView.loadUrl(url);
         mWebView.getSettings().setJavaScriptEnabled(true);

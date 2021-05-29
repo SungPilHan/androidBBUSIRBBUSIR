@@ -1,15 +1,11 @@
 package com.android.BBUSIRBBUSIR;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -21,7 +17,6 @@ import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -34,7 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
@@ -49,7 +44,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import static java.lang.Thread.sleep;
 
-public class test extends Activity {
+public class ViewStatmentActivity extends Activity {
     String uname;
     Button transfer;
     ImageView image_back;
@@ -77,7 +72,7 @@ public class test extends Activity {
         serverport = serverDetails.getString("serverport", "8888");
 
         // 송금 페이지로 이동
-        transfer = (Button) findViewById(R.id.button_Transfer1);
+        transfer = findViewById(R.id.button_Transfer1);
         transfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,26 +83,26 @@ public class test extends Activity {
         });
 
         // 뒤로가기
-        image_back = (ImageView) findViewById(R.id.account_back);
+        image_back = findViewById(R.id.account_back);
         image_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent post = new Intent(getApplicationContext(), PostLogin.class);
+                Intent post = new Intent(getApplicationContext(), UserMainActivity.class);
                 post.putExtra("uname", uname);
                 startActivity(post);
                 finish();
             }
         });
 
-        account_number2 = (TextView)findViewById(R.id.account_number2);
+        account_number2 = findViewById(R.id.account_number2);
         number2 = intent.getStringExtra("account");
         account_number2.setTextSize(20);
         account_number2.setText(number2);
 
-        price2 = (TextView) findViewById(R.id.price2);
+        price2 = findViewById(R.id.price2);
         new RequestbalanceTask().execute("account");
 
-        mWebView = (WebView) findViewById(R.id.wv_transferhistory);
+        mWebView = findViewById(R.id.wv_transferhistory);
     }
 
     @Override
@@ -127,7 +122,7 @@ public class test extends Activity {
     }
     //송금 페이지로 이동, 사용자 계좌번호 전달
     private void trans_account() {
-        Intent b = new Intent(this, DoTransfer.class);
+        Intent b = new Intent(this, DoTransferActivity.class);
         b.putExtra("account", account_number2.getText().toString());
         startActivity(b);
     }
@@ -149,7 +144,7 @@ public class test extends Activity {
         }
         protected void onPostExecute(Double result) {}
         protected void onProgressUpdate(Integer...progress) {}
-        public void postData(String valueIWantToSend) throws ClientProtocolException, IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, CertificateException, KeyStoreException {
+        public void postData(String valueIWantToSend) throws IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, CertificateException, KeyStoreException {
             // Create a new HttpClient and Post Header
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(protocol + serverip + ":" + serverport + "/getbalance");
@@ -197,12 +192,7 @@ public class test extends Activity {
 
         private String convertStreamToString(InputStream in ) throws IOException {
             // TODO Auto-generated method stub
-            try {
-                reader = new BufferedReader(new InputStreamReader( in , "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            reader = new BufferedReader(new InputStreamReader( in , StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {

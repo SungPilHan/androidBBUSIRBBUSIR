@@ -86,11 +86,8 @@ public class TrackUserContentProvider extends ContentProvider {
 		Context context = getContext();
 		DatabaseHelper dbHelper = new DatabaseHelper(context);
 		db = dbHelper.getWritableDatabase();
-		if (db != null) {
-			return true;
-		}
-		return false;
-	}
+        return db != null;
+    }
 
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,

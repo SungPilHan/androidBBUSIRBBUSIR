@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.telephony.SmsManager;
 import android.util.Base64;
 
+import java.nio.charset.StandardCharsets;
+
 /*
 The class that handles the broadcast receiver functionality in the application.
 When a change password is successful, a SMS is sent as a confirmation to the phone
@@ -29,11 +31,11 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
                 SharedPreferences settings = context.getSharedPreferences(MYPREFS, Context.MODE_WORLD_READABLE);
                 final String username = settings.getString("EncryptedUsername", null);
                 byte[] usernameBase64Byte = Base64.decode(username, Base64.DEFAULT);
-                usernameBase64ByteString = new String(usernameBase64Byte, "UTF-8");
+                usernameBase64ByteString = new String(usernameBase64Byte, StandardCharsets.UTF_8);
                 final String password = settings.getString("superSecurePassword", null);
                 CryptoClass crypt = new CryptoClass();
                 String decryptedPassword = crypt.aesDeccryptedString(password);
-                String textPhoneno = phn.toString();
+                String textPhoneno = phn;
                 String textMessage = "Updated Password from: "+decryptedPassword+" to: "+newpass;
                 SmsManager smsManager = SmsManager.getDefault();
                 System.out.println("For the changepassword - phonenumber: "+textPhoneno+" password is: "+textMessage);

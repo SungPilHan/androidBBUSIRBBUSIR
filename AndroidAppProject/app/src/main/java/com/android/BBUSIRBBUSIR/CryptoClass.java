@@ -10,6 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 import android.util.Base64;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.InvalidAlgorithmParameterException;
@@ -87,9 +88,9 @@ public class CryptoClass {
 	*/
 	public String aesDeccryptedString(String theString) throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		// TODO Auto-generated method stub
-		byte[] keyBytes = key.getBytes("UTF-8");
-		cipherData = CryptoClass.aes256decrypt(ivBytes, keyBytes, Base64.decode(theString.getBytes("UTF-8"), Base64.DEFAULT));
-		plainText = new String(cipherData, "UTF-8");
+		byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
+		cipherData = CryptoClass.aes256decrypt(ivBytes, keyBytes, Base64.decode(theString.getBytes(StandardCharsets.UTF_8), Base64.DEFAULT));
+		plainText = new String(cipherData, StandardCharsets.UTF_8);
 		return plainText;
 	}
 
@@ -100,9 +101,9 @@ public class CryptoClass {
 	*/
 	public String aesEncryptedString(String theString) throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		// TODO Auto-generated method stub
-		byte[] keyBytes = key.getBytes("UTF-8");
+		byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
 		plainText = theString;
-		cipherData = CryptoClass.aes256encrypt(ivBytes, keyBytes, plainText.getBytes("UTF-8"));
+		cipherData = CryptoClass.aes256encrypt(ivBytes, keyBytes, plainText.getBytes(StandardCharsets.UTF_8));
 		cipherText = Base64.encodeToString(cipherData, Base64.DEFAULT);
 		return cipherText;
 	}

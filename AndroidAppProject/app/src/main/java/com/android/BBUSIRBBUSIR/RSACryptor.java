@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -79,7 +80,7 @@ public class RSACryptor {
         String pubKey = new String(publicKeyBytes);
         Log.d(TAG, "publicKey4444" + pubkey3);
 
-        byte[] encryptedBytes = cipher.doFinal(text.getBytes("utf-8"));
+        byte[] encryptedBytes = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
         Log.d(TAG, "encry" + encryptedBytes.toString());
         return encryptedBytes;
     }

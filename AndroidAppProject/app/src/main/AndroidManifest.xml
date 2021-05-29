@@ -55,7 +55,7 @@
             android:label="@string/title_activity_do_login" >
         </activity>
         <activity
-            android:name="com.android.BBUSIRBBUSIR.PostLogin"
+            android:name="com.android.BBUSIRBBUSIR.UserMainActivity"
             android:exported="true"
             android:label="@string/title_activity_post_login" >
         </activity>
@@ -64,27 +64,20 @@
             android:label="@string/title_activity_wrong_login" >
         </activity>
         <activity
-            android:name="com.android.BBUSIRBBUSIR.DoTransfer"
+            android:name="com.android.BBUSIRBBUSIR.DoTransferActivity"
             android:exported="true"
             android:label="@string/title_activity_do_transfer" >
         </activity>
         <activity
-            android:name="com.android.BBUSIRBBUSIR.ViewStatement"
-            android:exported="true"
-            android:label="@string/title_activity_view_statement" >
+            android:name="com.android.BBUSIRBBUSIR.ChangePasswordActivity"
+            android:label="ChangePasswordActivity">
         </activity>
 
-        <activity
-            android:name="com.android.BBUSIRBBUSIR.ChangePassword2"
-            android:label="ChangePassword2">
+        <activity android:name="com.android.BBUSIRBBUSIR.ViewStatmentActivity"
+            android:label="ViewStatmentActivity">
         </activity>
 
-        <activity android:name="com.android.BBUSIRBBUSIR.test"
-            android:label="test">
-
-        </activity>
-
-        <activity android:name="com.android.BBUSIRBBUSIR.createuser" />
+        <activity android:name="com.android.BBUSIRBBUSIR.SignupActivity" />
 
         <provider
             android:name="com.android.BBUSIRBBUSIR.TrackUserContentProvider"

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -44,7 +45,7 @@ import android.widget.EditText;
 The page that allows the user to transfer an amount between two accounts
 @author Dinesh Shetty
 */
-public class DoTransfer extends Activity {
+public class DoTransferActivity extends Activity {
 
     String result;
     String passNormalized;
@@ -74,7 +75,7 @@ public class DoTransfer extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_transfer);
 
-        image_back = (ImageView) findViewById(R.id.transfer_back);
+        image_back = findViewById(R.id.transfer_back);
         image_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +87,7 @@ public class DoTransfer extends Activity {
         Intent intent = getIntent();
         from = intent.getStringExtra("account");
 
-        editText_from = (TextView) findViewById(R.id.editText_from);
+        editText_from = findViewById(R.id.editText_from);
         editText_from.setText(from);
 
         // Get Server details from Shared Preference file.
@@ -95,13 +96,13 @@ public class DoTransfer extends Activity {
         serverport = serverDetails.getString("serverport", "8888");
 
         // Handle the transfer functionality
-        transfer = (Button)findViewById(R.id.Transfer);
+        transfer = findViewById(R.id.Transfer);
         transfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                to = (EditText) findViewById(R.id.editText_to);
-                amount = (EditText) findViewById(R.id.editText_amount);
+                to = findViewById(R.id.editText_to);
+                amount = findViewById(R.id.editText_amount);
                 new RequestDoTransferTask().execute("username");
             }
         });
@@ -129,12 +130,7 @@ public class DoTransfer extends Activity {
             SharedPreferences settings = getSharedPreferences(MYPREFS2, 0);
             final String username = settings.getString("EncryptedUsername", null);
             byte[] usernameBase64Byte = Base64.decode(username, Base64.DEFAULT);
-            try {
-                usernameBase64ByteString = new String(usernameBase64Byte, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            usernameBase64ByteString = new String(usernameBase64Byte, StandardCharsets.UTF_8);
             final String password = settings.getString("superSecurePassword", null);
             try {
             	//복호화
@@ -225,12 +221,7 @@ public class DoTransfer extends Activity {
 
     public String convertStreamToString(InputStream in) throws IOException {
         // TODO Auto-generated method stub
-        try {
-            reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         StringBuilder sb = new StringBuilder();
         String line = null;
         while ((line = reader.readLine()) != null) {

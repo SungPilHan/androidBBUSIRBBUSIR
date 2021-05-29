@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 /*
 The page that accepts username and the password from the user. The credentials
@@ -48,7 +49,7 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_log_main);
-		imageView = (ImageView) findViewById(R.id.imageView3);
+		imageView = findViewById(R.id.imageView3);
 		imageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View view) {
@@ -73,7 +74,7 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		login_buttons = (Button) findViewById(R.id.login_button);
+		login_buttons = findViewById(R.id.login_button);
 		login_buttons.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -83,11 +84,11 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		createuser_buttons = (Button) findViewById(R.id.button_CreateUser2);
+		createuser_buttons = findViewById(R.id.button_CreateUser2);
         createuser_buttons.setOnClickListener(new View.OnClickListener() {
             @Override
 			public void onClick(View view){
-				Intent intent = new Intent(LoginActivity.this, createuser.class);
+				Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
 				startActivity(intent);
 			}
         });
@@ -119,34 +120,27 @@ public class LoginActivity extends Activity {
 	protected void fillData() throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		// TODO Auto-generated method stub
 		SharedPreferences settings = getSharedPreferences(MYPREFS, 0);
-		final String username = settings.getString("EncryptedUsername", null);
-		final String password = settings.getString("superSecurePassword", null);
+		final String rsa_e_username = settings.getString("rsa_e_username", null);
+		final String rsa_e_password = settings.getString("rsa_e_password", null);
 
-		if(username!=null && password!=null)
+		RSACryptor rsa = new RSACryptor();
+		if(rsa_e_username!=null && rsa_e_password!=null)
 		{
-			byte[] usernameBase64Byte = Base64.decode(username, Base64.DEFAULT);
-			try {
-				usernameBase64ByteString = new String(usernameBase64Byte, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Username_Text = (EditText) findViewById(R.id.loginscreen_username);
-			Password_Text = (EditText) findViewById(R.id.loginscreen_password);
-			Username_Text.setText(usernameBase64ByteString);
-			CryptoClass crypt = new CryptoClass();
-			String decryptedPassword = crypt.aesDeccryptedString(password);
-			Password_Text.setText(decryptedPassword);
+			Username_Text = findViewById(R.id.loginscreen_username);
+			Password_Text = findViewById(R.id.loginscreen_password);
+
+			String rsa_d_username = rsa.decrypt(Base64.decode(rsa_e_username, Base64.DEFAULT));
+			Username_Text.setText(rsa_d_username);
+
+			String rsa_d_password = rsa.decrypt(Base64.decode(rsa_e_password, Base64.DEFAULT));
+			Password_Text.setText(rsa_d_password);
 		}
-		else if (username==null || password==null)
-		{
+		else if (rsa_e_username==null || rsa_e_password==null){
 			//Toast.makeText(this, "No stored credentials found!!", Toast.LENGTH_LONG).show();
 		}
-		else
-		{
-			//Toast.makeText(this, "No stored credentials found!!", Toast.LENGTH_LONG).show();
+		else{
+			Toast.makeText(this, "No stored credentials found!!", Toast.LENGTH_LONG).show();
 		}
-
 	}
 
 	/*
@@ -156,8 +150,8 @@ public class LoginActivity extends Activity {
     */
 	protected void performlogin() {
 		// TODO Auto-generated method stub
-		Username_Text = (EditText) findViewById(R.id.loginscreen_username);
-		Password_Text = (EditText) findViewById(R.id.loginscreen_password);
+		Username_Text = findViewById(R.id.loginscreen_username);
+		Password_Text = findViewById(R.id.loginscreen_password);
 		Intent i = new Intent(this, DoLogin.class);
 		i.putExtra("passed_username", Username_Text.getText().toString());
 		i.putExtra("passed_password", Password_Text.getText().toString());

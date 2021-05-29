@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -38,7 +39,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ChangePassword2 extends Activity {
+public class ChangePasswordActivity extends Activity {
 
     ImageView image_back; // 뒤로가기
     //	The EditText that holds the new password entered by the user
@@ -70,7 +71,7 @@ public class ChangePassword2 extends Activity {
         setContentView(R.layout.activity_changepass);
 
         //뒤로가기 이미지 버튼
-        image_back = (ImageView) findViewById(R.id.changepasswd_back);
+        image_back = findViewById(R.id.changepasswd_back);
         image_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,17 +84,17 @@ public class ChangePassword2 extends Activity {
         serverip = serverDetails.getString("serverip", "3.20.202.177");
         serverport = serverDetails.getString("serverport", "8888");
 
-        changePassword_text = (EditText) findViewById(R.id.editText_newPassword);
-        changePassword_text2 = (EditText) findViewById(R.id.editText_newPassword2);
+        changePassword_text = findViewById(R.id.editText_newPassword);
+        changePassword_text2 = findViewById(R.id.editText_newPassword2);
 
         Intent intent = getIntent();
         uname = intent.getStringExtra("uname");
         System.out.println("newpassword=" + uname);
-        textView_Username = (TextView) findViewById(R.id.textView_Username);
+        textView_Username = findViewById(R.id.textView_Username);
         textView_Username.setText(uname);
 
         // Manage the change password button click
-        changePassword_button = (Button) findViewById(R.id.button_newPasswordSubmit);
+        changePassword_button = findViewById(R.id.button_newPasswordSubmit);
         changePassword_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +135,7 @@ public class ChangePassword2 extends Activity {
         The function that makes an HTTP Post to the server endpoint that handles the
         change password operation.
         */
-        public void postData(String valueIWantToSend) throws ClientProtocolException, IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+        public void postData(String valueIWantToSend) throws IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(protocol + serverip + ":" + serverport + "/changepassword");
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -163,8 +164,6 @@ public class ChangePassword2 extends Activity {
                     @Override
                     public void run() {
                         if (result != null) {
-
-
                             if (result.indexOf("Change Password Successful") != -1) {
                                 //	Below code handles the Json response parsing
                                 JSONObject jsonObject;
@@ -194,12 +193,7 @@ public class ChangePassword2 extends Activity {
 
         private String convertStreamToString(InputStream in ) throws IOException {
             // TODO Auto-generated method stub
-            try {
-                reader = new BufferedReader(new InputStreamReader( in , "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            reader = new BufferedReader(new InputStreamReader( in , StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {

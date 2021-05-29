@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ View Statement: Module that allows the user to view transaction history for the 
 Change Password:  Module that allows the logged in user to change the password
 @author Dinesh Shetty
 */
-public class PostLogin extends Activity {
+public class UserMainActivity extends Activity {
 	JSONObject jsonObject;
 
 	ImageView image_back;
@@ -68,7 +69,7 @@ public class PostLogin extends Activity {
 		setContentView(R.layout.activity_new_main);
 		Intent intent = getIntent();
 		uname = intent.getStringExtra("uname");
-		name = (TextView) findViewById(R.id.name);
+		name = findViewById(R.id.name);
 		name.setText(uname);
 
 		serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
@@ -76,7 +77,7 @@ public class PostLogin extends Activity {
 		serverport = serverDetails.getString("serverport", "8888");
 
 		// 뒤로가기
-		image_back = (ImageView) findViewById(R.id.new_main_back);
+		image_back = findViewById(R.id.new_main_back);
 		image_back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -86,7 +87,7 @@ public class PostLogin extends Activity {
 		});
 
 		// 비밀번호 설정
-		image_lock = (ImageView) findViewById(R.id.new_main_lock);
+		image_lock = findViewById(R.id.new_main_lock);
 		image_lock.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -94,18 +95,18 @@ public class PostLogin extends Activity {
 			}
 		});
 
-		linearLayout = (LinearLayout) findViewById(R.id.linearlayout);
+		linearLayout = findViewById(R.id.linearlayout);
 		linearLayout.setGravity(Gravity.TOP);
 		linearParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		linearParams.gravity = Gravity.CENTER;
 
-		new PostLogin.RequestAccountlistTask().execute("username");
+		new UserMainActivity.RequestAccountlistTask().execute("username");
 
-		add_count = (Button) findViewById(R.id.add_account);
+		add_count = findViewById(R.id.add_account);
 		add_count.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new PostLogin.RequestAccountaddTask().execute("username");
+				new UserMainActivity.RequestAccountaddTask().execute("username");
 			}
 		});
 	}
@@ -127,14 +128,14 @@ public class PostLogin extends Activity {
 
 	//비밀번호 변경 페이지로 이동, 사용자 id 전달
 	private void testchangepw() {
-		Intent b = new Intent(this, ChangePassword2.class);
+		Intent b = new Intent(this, ChangePasswordActivity.class);
 		b.putExtra("uname", name.getText().toString());
 		startActivity(b);
 	}
 
 	// 전송(계좌내역조회) 페이지로 금액, 계좌 값 전달
 	private void move_dotransfer(String account, String balance) {
-		Intent a = new Intent(this, test.class);
+		Intent a = new Intent(this, ViewStatmentActivity.class);
 		a.putExtra("balance", balance);
 		a.putExtra("account", account);
 		a.putExtra("username", uname);
@@ -325,13 +326,8 @@ public class PostLogin extends Activity {
 	}
 	public String convertStreamToString(InputStream in) throws IOException {
 		// TODO Auto-generated method stub
-		try {
-			reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		StringBuilder sb = new StringBuilder();
+        reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
 		String line = null;
 		while ((line = reader.readLine()) != null) {
 			sb.append(line + "\n");

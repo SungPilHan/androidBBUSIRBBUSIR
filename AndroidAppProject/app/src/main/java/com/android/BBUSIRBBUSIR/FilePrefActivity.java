@@ -38,11 +38,11 @@ public class FilePrefActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_network);
 
-		edittext_serverip = (EditText) findViewById(R.id.edittext_serverip);
-		edittext_serverport = (EditText) findViewById(R.id.edittext_serverport);
+		edittext_serverip = findViewById(R.id.edittext_serverip);
+		edittext_serverport = findViewById(R.id.edittext_serverport);
 
 		// Get Server details from Shared Preference file.
-		submitPref_buttonz = (Button) findViewById(R.id.submitPref_button);
+		submitPref_buttonz = findViewById(R.id.submitPref_button);
 		submitPref_buttonz.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -52,7 +52,7 @@ public class FilePrefActivity extends Activity {
 			}
 		});
 
-		back_imageView = (ImageView) findViewById(R.id.back_imageView);
+		back_imageView = findViewById(R.id.back_imageView);
 		back_imageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

@@ -58,8 +58,7 @@ public class SplashActivity extends Activity {
         try {
             process = Runtime.getRuntime().exec(new String[]{"/system/bin/which", "su"});
             BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            if (in.readLine() != null) return true;
-            return false;
+            return in.readLine() != null;
         } catch (Throwable t) {
             return false;
         } finally {
@@ -70,10 +69,6 @@ public class SplashActivity extends Activity {
     private boolean doesSuperuserApkExist(String s) {
         File rootFile = new File("/system/app/Superuser.apk");
         Boolean doesexist = rootFile.exists();
-        if (doesexist == true) {
-            return (true);
-        } else {
-            return (false);
-        }
+        return doesexist == true;
     }
 }

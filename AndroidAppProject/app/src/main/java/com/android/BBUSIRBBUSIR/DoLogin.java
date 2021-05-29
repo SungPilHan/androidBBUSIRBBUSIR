@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
@@ -18,7 +18,6 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -102,7 +101,7 @@ public class DoLogin extends Activity {
 		}
 		protected void onPostExecute(Double result) {}
 		protected void onProgressUpdate(Integer...progress) {}
-		public void postData(String valueIWantToSend) throws ClientProtocolException, IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, CertificateException, KeyStoreException {
+		public void postData(String valueIWantToSend) throws IOException, JSONException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, CertificateException, KeyStoreException {
 			// Create a new HttpClient and Post Header
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(protocol + serverip + ":" + serverport + "/login");
@@ -134,7 +133,7 @@ public class DoLogin extends Activity {
 					Log.d("Successful Login:", ", account=" + username + ":" + password);
 					saveCreds(username, password);
 					trackUserLogins();
-					Intent pL = new Intent(getApplicationContext(), PostLogin.class);
+					Intent pL = new Intent(getApplicationContext(), UserMainActivity.class);
 					pL.putExtra("uname", username);
 					startActivity(pL);
 				} else {
@@ -172,39 +171,21 @@ public class DoLogin extends Activity {
 			SharedPreferences mySharedPreferences;
 			mySharedPreferences = getSharedPreferences(MYPREFS, Activity.MODE_PRIVATE);
 			SharedPreferences.Editor editor = mySharedPreferences.edit();
-			rememberme_username = username;
-			rememberme_password = password;
-			String base64Username = new String(Base64.encodeToString(rememberme_username.getBytes(), 4));
-			CryptoClass crypt = new CryptoClass();
 
 			RSACryptor rsa = new RSACryptor();
-			RSACryptor rsa2 = new RSACryptor();
 			rsa.createKey();
 			byte[] rsa_e_username = rsa.encrypt(username);
-			String rsa_d_username = rsa2.decrypt(rsa_e_username);
 			byte[] rsa_e_password = rsa.encrypt(password);
-			String rsa_d_password = rsa2.decrypt(rsa_e_password);
 
-			superSecurePassword = crypt.aesEncryptedString(rememberme_password);
-			editor.putString("EncryptedUsername", base64Username);
-			editor.putString("superSecurePassword", superSecurePassword);
-
-			editor.putString("rsa_e_username", rsa_e_username.toString());
-			editor.putString("rsa_d_username", rsa_d_username);
-			editor.putString("rsa_e_password", rsa_e_password.toString());
-			editor.putString("rsa_d_password", rsa_d_password);
+			editor.putString("rsa_e_username", Base64.encodeToString(rsa_e_username, 4));
+			editor.putString("rsa_e_password", Base64.encodeToString(rsa_e_password, 4));
 
 			editor.commit();
 		}
 
 		private String convertStreamToString(InputStream in ) throws IOException {
 			// TODO Auto-generated method stub
-			try {
-				reader = new BufferedReader(new InputStreamReader( in , "UTF-8"));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			reader = new BufferedReader(new InputStreamReader( in , StandardCharsets.UTF_8));
 			StringBuilder sb = new StringBuilder();
 			String line = null;
 			while ((line = reader.readLine()) != null) {
