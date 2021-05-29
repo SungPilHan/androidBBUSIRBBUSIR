@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -68,20 +69,38 @@ public class DoLogin extends Activity {
 
         // Get Server details from Shared Preference file.
 		serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
-		serverip = serverDetails.getString("serverip", "3.20.202.177");
-		serverport = serverDetails.getString("serverport", "8888");
-        if(serverip!=null && serverport!=null){
-			Intent data = getIntent();
-			username = data.getStringExtra("passed_username");
-			password = data.getStringExtra("passed_password");
-			new RequestTask().execute("username");
-        }
-        else
-        {
-            Intent setupServerdetails =new Intent(this,FilePrefActivity.class);
-            startActivity(setupServerdetails);
-            Toasteroid.show(this, "Server path/port not set!!", Toasteroid.STYLES.WARNING, Toasteroid.LENGTH_SHORT);
-        }
+
+		CryptoClass cryptoClass = new CryptoClass();
+		try {
+			serverip = cryptoClass.aesDeccryptedString(serverDetails.getString("serverip", null));
+			serverport = cryptoClass.aesDeccryptedString(serverDetails.getString("serverport", null));
+			if(serverip!=null && serverport!=null){
+				Intent data = getIntent();
+				username = data.getStringExtra("passed_username");
+				password = data.getStringExtra("passed_password");
+				new RequestTask().execute("username");
+			}
+			else
+			{
+				Intent setupServerdetails =new Intent(this,FilePrefActivity.class);
+				startActivity(setupServerdetails);
+				Toasteroid.show(this, "Server path/port not set!!", Toasteroid.STYLES.WARNING, Toasteroid.LENGTH_SHORT);
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	class RequestTask extends AsyncTask < String, String, String > {

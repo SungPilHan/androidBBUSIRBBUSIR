@@ -16,7 +16,6 @@ number used by the user
 @author Dinesh Shetty
 */
 public class MyBroadCastReceiver extends BroadcastReceiver {
-	String usernameBase64ByteString;
 	public static final String MYPREFS = "mySharedPreferences";
 
 	@Override
@@ -29,12 +28,10 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
 		if (phn != null) {
 			try {
                 SharedPreferences settings = context.getSharedPreferences(MYPREFS, Context.MODE_WORLD_READABLE);
-                final String username = settings.getString("EncryptedUsername", null);
-                byte[] usernameBase64Byte = Base64.decode(username, Base64.DEFAULT);
-                usernameBase64ByteString = new String(usernameBase64Byte, StandardCharsets.UTF_8);
-                final String password = settings.getString("superSecurePassword", null);
-                CryptoClass crypt = new CryptoClass();
-                String decryptedPassword = crypt.aesDeccryptedString(password);
+                final String rsa_e_password = settings.getString("rsa_e_password", null);
+                RSACryptor rsa = new RSACryptor();
+                String decryptedPassword = rsa.decrypt(Base64.decode(rsa_e_password, Base64.DEFAULT));
+
                 String textPhoneno = phn;
                 String textMessage = "Updated Password from: "+decryptedPassword+" to: "+newpass;
                 SmsManager smsManager = SmsManager.getDefault();

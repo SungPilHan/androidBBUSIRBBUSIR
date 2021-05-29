@@ -10,6 +10,15 @@ import android.webkit.WebView;
 import android.webkit.WebChromeClient;
 import android.widget.ImageView;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 public class SignupActivity extends Activity {
     ImageView image_back; // 로그인 페이지 이동
     String serverip = "";
@@ -30,8 +39,25 @@ public class SignupActivity extends Activity {
         });
 
         serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
-        serverip = serverDetails.getString("serverip", "3.20.202.177");
-        serverport = serverDetails.getString("serverport", "8888");
+        CryptoClass cryptoClass = new CryptoClass();
+        try {
+            serverip = cryptoClass.aesDeccryptedString(serverDetails.getString("serverip", null));
+            serverport = cryptoClass.aesDeccryptedString(serverDetails.getString("serverport", null));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
 
         //웹 뷰 시작
         WebView mWebView = findViewById(R.id.wv_createuser);

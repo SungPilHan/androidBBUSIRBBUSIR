@@ -11,8 +11,16 @@ import android.widget.ImageView;
 
 import com.marcohc.toasteroid.Toasteroid;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /*
 The page that allows user to set the server IP address and port number
@@ -86,11 +94,36 @@ public class FilePrefActivity extends Activity {
             Pattern p2 = Pattern.compile(PORT_PATTERN);
             Matcher m2 = p2.matcher(serverportSaved);
             if (serverportSaved!=null && m2.matches()) {
-                editor.putString("serverip", serveripSaved);
-                editor.putString("serverport", serverportSaved);
-                editor.commit();
-				Toasteroid.show(this, "Server Configured Successfully!!", Toasteroid.STYLES.SUCCESS, Toasteroid.LENGTH_SHORT);
-				finish();
+            	CryptoClass cryptoClass = new CryptoClass();
+
+				try {
+					editor.putString("serverip", cryptoClass.aesEncryptedString(serveripSaved));
+					editor.putString("serverport", cryptoClass.aesEncryptedString(serverportSaved));
+					editor.commit();
+					Toasteroid.show(this, "Server Configured Successfully!!", Toasteroid.STYLES.SUCCESS, Toasteroid.LENGTH_SHORT);
+					finish();
+				} catch (UnsupportedEncodingException e) {
+					Toasteroid.show(this, "Save Error!!", Toasteroid.STYLES.ERROR, Toasteroid.LENGTH_SHORT);
+					e.printStackTrace();
+				} catch (InvalidKeyException e) {
+					Toasteroid.show(this, "Save Error!!", Toasteroid.STYLES.ERROR, Toasteroid.LENGTH_SHORT);
+					e.printStackTrace();
+				} catch (NoSuchAlgorithmException e) {
+					Toasteroid.show(this, "Save Error!!", Toasteroid.STYLES.ERROR, Toasteroid.LENGTH_SHORT);
+					e.printStackTrace();
+				} catch (NoSuchPaddingException e) {
+					Toasteroid.show(this, "Save Error!!", Toasteroid.STYLES.ERROR, Toasteroid.LENGTH_SHORT);
+					e.printStackTrace();
+				} catch (InvalidAlgorithmParameterException e) {
+					Toasteroid.show(this, "Save Error!!", Toasteroid.STYLES.ERROR, Toasteroid.LENGTH_SHORT);
+					e.printStackTrace();
+				} catch (IllegalBlockSizeException e) {
+					Toasteroid.show(this, "Save Error!!", Toasteroid.STYLES.ERROR, Toasteroid.LENGTH_SHORT);
+					e.printStackTrace();
+				} catch (BadPaddingException e) {
+					Toasteroid.show(this, "Save Error!!", Toasteroid.STYLES.ERROR, Toasteroid.LENGTH_SHORT);
+					e.printStackTrace();
+				}
             }
             else {
                 Toasteroid.show(this, "Invalid Port entered!!", Toasteroid.STYLES.ERROR, Toasteroid.LENGTH_SHORT);

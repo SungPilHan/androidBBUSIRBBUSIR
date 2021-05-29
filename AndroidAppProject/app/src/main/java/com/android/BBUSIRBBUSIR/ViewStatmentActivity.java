@@ -29,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -68,8 +69,25 @@ public class ViewStatmentActivity extends Activity {
         uname = intent.getStringExtra("username");
 
         serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
-        serverip = serverDetails.getString("serverip", "3.20.202.177");
-        serverport = serverDetails.getString("serverport", "8888");
+        CryptoClass cryptoClass = new CryptoClass();
+        try {
+            serverip = cryptoClass.aesDeccryptedString(serverDetails.getString("serverip", null));
+            serverport = cryptoClass.aesDeccryptedString(serverDetails.getString("serverport", null));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
 
         // 송금 페이지로 이동
         transfer = findViewById(R.id.button_Transfer1);

@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.marcohc.toasteroid.Toasteroid;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -31,8 +33,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 
 /*
@@ -73,8 +82,25 @@ public class UserMainActivity extends Activity {
 		name.setText(uname);
 
 		serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
-		serverip = serverDetails.getString("serverip", "3.20.202.177");
-		serverport = serverDetails.getString("serverport", "8888");
+		CryptoClass cryptoClass = new CryptoClass();
+		try {
+			serverip = cryptoClass.aesDeccryptedString(serverDetails.getString("serverip", null));
+			serverport = cryptoClass.aesDeccryptedString(serverDetails.getString("serverport", null));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		}
 
 		// 뒤로가기
 		image_back = findViewById(R.id.new_main_back);

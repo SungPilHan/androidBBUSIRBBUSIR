@@ -81,8 +81,25 @@ public class ChangePasswordActivity extends Activity {
 
         // Get Server details from Shared Preference file.
         serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
-        serverip = serverDetails.getString("serverip", "3.20.202.177");
-        serverport = serverDetails.getString("serverport", "8888");
+        CryptoClass cryptoClass = new CryptoClass();
+        try {
+            serverip = cryptoClass.aesDeccryptedString(serverDetails.getString("serverip", null));
+            serverport = cryptoClass.aesDeccryptedString(serverDetails.getString("serverport", null));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
 
         changePassword_text = findViewById(R.id.editText_newPassword);
         changePassword_text2 = findViewById(R.id.editText_newPassword2);

@@ -60,6 +60,7 @@ public class DoTransferActivity extends Activity {
     EditText to;
     //	The EditText that holds the to amount to be transferred between the accounts
     EditText amount;
+    EditText memo;
     //	The Button that handles the transfer operation activity
     Button transfer;
     HttpResponse responseBody;
@@ -92,8 +93,25 @@ public class DoTransferActivity extends Activity {
 
         // Get Server details from Shared Preference file.
         serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
-        serverip = serverDetails.getString("serverip", "3.20.202.177");
-        serverport = serverDetails.getString("serverport", "8888");
+        CryptoClass cryptoClass = new CryptoClass();
+        try {
+            serverip = cryptoClass.aesDeccryptedString(serverDetails.getString("serverip", null));
+            serverport = cryptoClass.aesDeccryptedString(serverDetails.getString("serverport", null));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
 
         // Handle the transfer functionality
         transfer = findViewById(R.id.Transfer);
@@ -103,6 +121,7 @@ public class DoTransferActivity extends Activity {
                 // TODO Auto-generated method stub
                 to = findViewById(R.id.editText_to);
                 amount = findViewById(R.id.editText_amount);
+                memo = findViewById(R.id.editText_memo);
                 new RequestDoTransferTask().execute("username");
             }
         });
@@ -135,12 +154,13 @@ public class DoTransferActivity extends Activity {
             String rsa_d_username = rsa.decrypt(Base64.decode(rsa_e_username, Base64.DEFAULT));
             String rsa_d_password = rsa.decrypt(Base64.decode(rsa_e_password, Base64.DEFAULT));
 
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(6);
             nameValuePairs.add(new BasicNameValuePair("username", rsa_d_username));
             nameValuePairs.add(new BasicNameValuePair("password", rsa_d_password));
             nameValuePairs.add(new BasicNameValuePair("from_acc", from));
             nameValuePairs.add(new BasicNameValuePair("to_acc", to.getText().toString()));
             nameValuePairs.add(new BasicNameValuePair("amount", amount.getText().toString()));
+            nameValuePairs.add(new BasicNameValuePair("memo", memo.getText().toString()));
             try {
                 //	The HTTP Post of the credentials plus the transaction information
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
