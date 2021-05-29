@@ -22,18 +22,4 @@ public class WrongLogin extends Activity {
         startActivity(backtoLogin);
         finish();
 	}
-	// Added for handling menu operations
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	public void callPreferences() {
-		// TODO Auto-generated method stub
-		Intent i = new Intent(this, FilePrefActivity.class);
-		startActivity(i);
-	}
 }
