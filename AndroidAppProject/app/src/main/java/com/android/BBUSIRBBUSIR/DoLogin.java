@@ -100,6 +100,10 @@ public class DoLogin extends Activity {
 			e.printStackTrace();
 		} catch (BadPaddingException e) {
 			e.printStackTrace();
+		} catch (NullPointerException e){
+			Intent intent = new Intent(getApplicationContext(), FilePrefActivity.class);
+			startActivity(intent);
+			finish();
 		}
 	}
 
