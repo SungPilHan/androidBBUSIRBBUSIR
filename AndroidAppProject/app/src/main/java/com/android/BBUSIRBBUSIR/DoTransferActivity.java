@@ -128,21 +128,16 @@ public class DoTransferActivity extends Activity {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(protocol + serverip + ":" + serverport + "/dotransfer");
             SharedPreferences settings = getSharedPreferences(MYPREFS2, 0);
-            final String username = settings.getString("EncryptedUsername", null);
-            byte[] usernameBase64Byte = Base64.decode(username, Base64.DEFAULT);
-            usernameBase64ByteString = new String(usernameBase64Byte, StandardCharsets.UTF_8);
-            final String password = settings.getString("superSecurePassword", null);
-            try {
-            	//복호화
-                //	Stores the decrypted form of the password from the locally stored shared preference file
-                passNormalized = getNormalizedPassword(password);
-            } catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
+
+            final String rsa_e_username = settings.getString("rsa_e_username", null);
+            final String rsa_e_password = settings.getString("rsa_e_password", null);
+            RSACryptor rsa = new RSACryptor();
+            String rsa_d_username = rsa.decrypt(Base64.decode(rsa_e_username, Base64.DEFAULT));
+            String rsa_d_password = rsa.decrypt(Base64.decode(rsa_e_password, Base64.DEFAULT));
+
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
-            nameValuePairs.add(new BasicNameValuePair("username", usernameBase64ByteString));
-            nameValuePairs.add(new BasicNameValuePair("password", passNormalized));
+            nameValuePairs.add(new BasicNameValuePair("username", rsa_d_username));
+            nameValuePairs.add(new BasicNameValuePair("password", rsa_d_password));
             nameValuePairs.add(new BasicNameValuePair("from_acc", from));
             nameValuePairs.add(new BasicNameValuePair("to_acc", to.getText().toString()));
             nameValuePairs.add(new BasicNameValuePair("amount", amount.getText().toString()));
@@ -206,19 +201,6 @@ public class DoTransferActivity extends Activity {
         }
 
     }
-
-
-    /*
-    The function that handles the aes256 decryption of the password from the encrypted password.
-    password: Encrypted password input to the aes function
-    returns: Plaintext password outputted by the aes function
-    */
-    private String getNormalizedPassword(String password) throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-        CryptoClass crypt = new CryptoClass();
-        return crypt.aesDeccryptedString(password);
-    }
-
-
     public String convertStreamToString(InputStream in) throws IOException {
         // TODO Auto-generated method stub
         reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
