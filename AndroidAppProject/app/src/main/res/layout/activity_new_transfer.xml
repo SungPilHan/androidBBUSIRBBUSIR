@@ -135,7 +135,6 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="433dp"
         android:layout_marginEnd="31dp"
-        android:layout_marginBottom="337dp"
         android:background="@drawable/border_button"
         android:text="이체"
         android:textSize="20sp"
