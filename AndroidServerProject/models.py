@@ -57,7 +57,7 @@ class History(Base):
     amount = Column(Integer)
     memo = Column(String(50))
 
-    def __init__(self, from_acc=None, to_acc=None, amount=None, memo=" "):
+    def __init__(self, from_acc=None, to_acc=None, amount=None, memo=None):
         self.from_acc = from_acc
         self.to_acc = to_acc
         self.amount = amount
