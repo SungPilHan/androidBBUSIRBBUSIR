@@ -115,7 +115,7 @@ public class UserMainActivity extends Activity {
 		Button buttons = new Button(this);
 		buttons.setLayoutParams(linearParams);
 		buttons.setBackgroundResource(R.drawable.border_button_account);
-		String str= account + "\n" + balance;
+		String str= "312258-16-" + account + "\n잔액 : " + balance + "원";
 		buttons.setText(str);
 		buttons.setOnClickListener(new View.OnClickListener() {
 			@Override
