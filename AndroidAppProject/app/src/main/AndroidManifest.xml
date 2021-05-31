@@ -78,6 +78,7 @@
         </activity>
 
         <activity android:name="com.android.BBUSIRBBUSIR.SignupActivity" />
+        <activity android:name="com.android.BBUSIRBBUSIR.AdminPageActivity" />
 
         <provider
             android:name="com.android.BBUSIRBBUSIR.TrackUserContentProvider"
