@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+
+import com.marcohc.toasteroid.Toasteroid;
 
 /*
 The page that accepts username and the password from the user. The credentials
@@ -33,6 +36,7 @@ public class LoginActivity extends Activity {
 	Button login_buttons;
 	//   The Button that calls the create user function
 	Button createuser_buttons;
+	Button admin_buttons;
 	//   The EditText that holds the username entered by the user
 	EditText Username_Text;
 	//   The EditText that holds the password entered by the user
@@ -43,6 +47,9 @@ public class LoginActivity extends Activity {
 	//  if the user has logged in successfully earlier
 	Button fillData_button;
 	String usernameBase64ByteString;
+	SharedPreferences serverDetails;
+	String serverip = "";
+	String serverport = "";
 	public static final String MYPREFS = "mySharedPreferences";
 
 	@Override
@@ -93,6 +100,19 @@ public class LoginActivity extends Activity {
 			}
         });
 
+        String mess = getResources().getString(R.string.is_admin);
+		if(mess.equals("no")){
+			View button_admin = findViewById(R.id.button_admin);
+			button_admin.setVisibility(View.GONE);
+		}
+		admin_buttons = (Button) findViewById(R.id.button_admin);
+		admin_buttons.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v){
+				gotoadminpage();
+			}
+		});
+
         try {
             fillData();
         } catch (UnsupportedEncodingException e) {
@@ -117,6 +137,37 @@ public class LoginActivity extends Activity {
     if the user has logged in successfully atleast one earlier using
     that device
     */
+	protected void gotoadminpage(){
+		serverDetails = PreferenceManager.getDefaultSharedPreferences(this);
+		CryptoClass cryptoClass = new CryptoClass();
+		try {
+			serverip = cryptoClass.aesDeccryptedString(serverDetails.getString("serverip", null));
+			serverport = cryptoClass.aesDeccryptedString(serverDetails.getString("serverport", null));
+			if(serverip!=null && serverport!=null){
+				Intent adminpage = new Intent(this, AdminPageActivity.class);
+				startActivity(adminpage);
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e){
+			Intent intent = new Intent(getApplicationContext(), FilePrefActivity.class);
+			startActivity(intent);
+			Toasteroid.show(this, "Server path/port not set!!", Toasteroid.STYLES.WARNING, Toasteroid.LENGTH_SHORT);
+		}
+	}
+
 	protected void fillData() throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		// TODO Auto-generated method stub
 		SharedPreferences settings = getSharedPreferences(MYPREFS, 0);
