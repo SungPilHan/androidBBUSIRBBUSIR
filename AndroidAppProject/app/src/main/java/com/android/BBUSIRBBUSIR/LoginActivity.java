@@ -83,7 +83,6 @@ public class LoginActivity extends Activity {
 
 		login_buttons = findViewById(R.id.login_button);
 		login_buttons.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub

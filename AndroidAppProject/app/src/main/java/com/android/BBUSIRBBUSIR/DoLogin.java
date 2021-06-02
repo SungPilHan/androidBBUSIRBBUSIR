@@ -52,8 +52,6 @@ public class DoLogin extends Activity {
 	//	Stores the password passed by the calling intent
 	String password;
 	String result;
-	String superSecurePassword;
-	String rememberme_username, rememberme_password;
 	public static final String MYPREFS = "mySharedPreferences";
 	String serverip = "";
 	String serverport = "";
