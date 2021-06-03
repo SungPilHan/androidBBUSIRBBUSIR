@@ -262,7 +262,7 @@ def info():
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
 	print(ip)
-	return render_template('admin.html', ip=ip)
+	return render_template('admin.html')
 	
 
 if __name__ == '__main__':		

@@ -20,13 +20,21 @@
         else{
             $.ajax({
             cache: false,
-            url: "http://{{ip}}:8888/login",
+            url: "/login",
             type: "post",
             data: "username="+username+"&password="+password,
             success: function(data){
               var jsonData = JSON.parse(data);
               if(jsonData["message"]=="Welcome admin"){
-                alert("로그인 되었습니다.");
+                $.ajax({
+                  url: '/info',
+                  type: 'get',
+                  data: 'info=welcome admin',
+                  success: function(data){
+                    $("#section").replaceWith(data);
+                    alert("로그인에 성공하였습니다.");
+                  }
+                })
               }
               else{
                 alert("로그인에 실패하였습니다.");
@@ -41,7 +49,7 @@
     </script>
   </head>
   <body>
-      <section class="login-wrap">
+      <section class="login-wrap" id="section">
         <br>
         <span class="login-id-wrap">
           <input id="username" name="username" placeholder="  아이디를 입력해주세요" type="text" class="input-id" style="border-radius: 15px; width: 350px; height: 55px; font-size: larger; border-color: dimgrey; border:1px solid">
