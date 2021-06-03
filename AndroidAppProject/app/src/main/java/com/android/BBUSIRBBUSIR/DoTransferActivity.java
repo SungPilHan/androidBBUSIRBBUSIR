@@ -122,11 +122,17 @@ public class DoTransferActivity extends Activity {
                 to = findViewById(R.id.editText_to);
                 amount = findViewById(R.id.editText_amount);
                 memo = findViewById(R.id.editText_memo);
-                if(to.getText().toString().equals(from)){
-                    Toast.makeText(getApplicationContext(), "보내는 계좌를 확인해주세요!!", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    new RequestDoTransferTask().execute("username");
+                try {
+                    if (to.getText().toString().equals(from)) {
+                        Toast.makeText(getApplicationContext(), "받는 계좌를 확인해주세요!!", Toast.LENGTH_LONG).show();
+                    } else if (Integer.parseInt(amount.getText().toString()) < 1) {
+                        Toast.makeText(getApplicationContext(), "보내는 금액을 확인해주세요!!", Toast.LENGTH_LONG).show();
+                    } else {
+                        new RequestDoTransferTask().execute("username");
+                    }
+                }catch (NumberFormatException e){
+                    Toast.makeText(getApplicationContext(), "보내는 금액을 확인해주세요!!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
                 }
             }
         });
