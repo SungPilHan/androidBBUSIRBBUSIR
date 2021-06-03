@@ -118,7 +118,6 @@ public class ViewStatmentActivity extends Activity {
         account_number2.setText("312258-16-"+number2);
 
         price2 = findViewById(R.id.price2);
-        new RequestbalanceTask().execute("account");
 
         mWebView = findViewById(R.id.wv_transferhistory);
     }
@@ -126,6 +125,8 @@ public class ViewStatmentActivity extends Activity {
     @Override
     public void onResume(){
         super.onResume();
+        new RequestbalanceTask().execute("account");
+
         //웹 뷰 시작
         mWebView.setWebViewClient(new WebViewClient());
         String postdata = "account="+number2;
