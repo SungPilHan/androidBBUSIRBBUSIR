@@ -122,7 +122,12 @@ public class DoTransferActivity extends Activity {
                 to = findViewById(R.id.editText_to);
                 amount = findViewById(R.id.editText_amount);
                 memo = findViewById(R.id.editText_memo);
-                new RequestDoTransferTask().execute("username");
+                if(to.getText().toString().equals(from)){
+                    Toast.makeText(getApplicationContext(), "보내는 계좌를 확인해주세요!!", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    new RequestDoTransferTask().execute("username");
+                }
             }
         });
     }
@@ -194,7 +199,7 @@ public class DoTransferActivity extends Activity {
                     runOnUiThread(new Runnable(){
                         @Override
                         public void run(){
-                            Toast.makeText(getApplicationContext(), "Transfer Done", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "송금 완료", Toast.LENGTH_LONG).show();
                             finish();
                         }
                     });
@@ -204,7 +209,7 @@ public class DoTransferActivity extends Activity {
                     runOnUiThread(new Runnable(){
                         @Override
                         public void run(){
-                            Toast.makeText(getApplicationContext(), "Transfer Fail", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "송금 실패", Toast.LENGTH_LONG).show();
                         }
                     });
                     Log.d("Result : ", "transfer Fail");
